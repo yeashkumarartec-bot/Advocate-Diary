@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Advocate Dairy</title>
+    <link rel="stylesheet" href="style.css?v=21.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+    
+    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+</head>
+<body>
+    <div class="auth-container">
+        <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+        
+        <div id="loginView" class="auth-form">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email Address" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button id="btnLogin">Login</button>
+            <div style="margin: 15px 0; color: #888;">OR</div>
+            <button id="btnGoogle" class="google-btn">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="G" style="width:20px;"> Sign in with Google
+            </button>
+            <p style="margin-top:20px;"><a href="#" id="showForgot">Forgot Password?</a></p>
+            <p>No account? <a href="#" id="showSignup">Create one</a></p>
+        </div>
+        
+        <div id="signupView" class="auth-form" style="display:none;">
+            <h2>Sign Up</h2>
+            <input type="email" id="signupEmail" placeholder="Email Address">
+            <input type="tel" id="signupMobile" placeholder="Mobile Number">
+            <input type="password" id="signupPassword" placeholder="Password">
+            <button id="btnSignup">Sign Up</button>
+            <p style="margin-top:20px;">Already have an account? <a href="#" id="showLoginFromSignup">Login</a></p>
+        </div>
+
+        <div id="forgotView" class="auth-form" style="display:none;">
+            <h2>Reset Password</h2>
+            <input type="email" id="forgotEmail" placeholder="Enter your email">
+            <button id="btnForgotPassword">Send Reset Link</button>
+            <p style="margin-top:20px;"><a href="#" id="showLoginFromForgot">Back to Login</a></p>
+        </div>
+    </div>
+
+    <div class="global-footer">
+        <p>Created by Yeash Pandey</p>
+        <p><a href="updates.html">App Updates</a> | <a href="policy.html">Privacy Policy</a> | <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
+    <script src="login.js?v=21.0"></script>
+</body>
+</html>

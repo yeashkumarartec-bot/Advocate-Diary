@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Clients</title>
+    <link rel="stylesheet" href="style.css?v=25.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2996/2996883.png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+            <div class="header-controls">
+                <span id="userEmail">Loading...</span>
+                <a href="dashboard.html" class="header-link">Dashboard</a> 
+                <a href="index.html" class="header-link">Go to Diary</a> 
+                <a href="recyclebin.html" class="header-link danger-link">♻️ Recycle Bin</a>
+                <button id="btnLogout">Logout</button>
+            </div>
+        </header>
+        <main>
+            <h2 style="text-align:center; color:#0d6efd;">My Clients</h2>
+            <div class="client-form-container" style="background:#f8f9fa; padding:15px; border-radius:8px; margin-bottom:20px;">
+                <h3 style="margin-top:0;">Add New Client</h3>
+                <form id="addClientForm" style="display:grid; gap:10px;">
+                    <input type="text" id="clientName" placeholder="Full Name" required>
+                    <input type="tel" id="clientMobile" placeholder="Mobile Number" required>
+                    <input type="email" id="clientEmail" placeholder="Email (Optional)">
+                    <input type="text" id="clientAddress" placeholder="Address (Optional)">
+                    <button type="submit" style="background:#198754; color:white; border:none; padding:12px; border-radius:5px; font-weight:bold;">Save Client</button>
+                </form>
+                <p id="clientFormSuccess" style="display:none; color:green; margin-top:10px;">Saved!</p>
+            </div>
+            <h3 style="color:#333;">Saved Clients</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Address</th><th>Action</th></tr></thead>
+                    <tbody id="clientTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="editClientModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeEditClientModal">&times;</span>
+            <h2>Edit Client</h2>
+            <form id="editClientForm" style="display:grid; gap:10px;">
+                <input type="hidden" id="editClientId">
+                <input type="text" id="editClientName" placeholder="Name" required>
+                <input type="tel" id="editClientMobile" placeholder="Mobile" required>
+                <input type="email" id="editClientEmail" placeholder="Email">
+                <input type="text" id="editClientAddress" placeholder="Address">
+                <button type="submit" style="background:#0d6efd; color:white; padding:12px; border:none; border-radius:5px;">Update</button>
+            </form>
+        </div>
+    </div>
+    
+    <div class="global-footer">
+        <p>Created by Yeash Pandey</p>
+        <p><a href="updates.html">App Updates</a> | <a href="policy.html">Privacy Policy</a> | <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
+    <script src="clients.js?v=21.0"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recycle Bin - Advocate Dairy</title>
+    <link rel="stylesheet" href="style.css?v=21.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+    
+    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+            <div class="header-controls">
+                <span id="userEmail">Loading...</span>
+                <a href="dashboard.html" class="header-link">Dashboard</a> 
+                <a href="clients.html" class="header-link">My Clients</a>
+                <a href="index.html" class="header-link">Go to Diary</a> 
+                <button id="btnLogout">Logout</button>
+            </div>
+        </header>
+        <main>
+            <h2 style="text-align:center; color:#dc3545;">Recycle Bin</h2>
+            <p style="text-align:center; color:#666;">Restore or permanently delete.</p>
+            
+            <h3 style="margin-top:30px; border-bottom:2px solid #eee;">Deleted Clients</h3>
+            <div class="table-container"><table><thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Actions</th></tr></thead><tbody id="clientRecycleBin"></tbody></table></div>
+
+            <h3 style="margin-top:30px; border-bottom:2px solid #eee;">Deleted Cases</h3>
+            <div class="table-container"><table><thead><tr><th>Case No</th><th>Party Name</th><th>Purpose</th><th>Actions</th></tr></thead><tbody id="caseRecycleBin"></tbody></table></div>
+        </main>
+    </div>
+    
+    <div class="global-footer">
+        <p>Created by Yeash Pandey</p>
+        <p><a href="updates.html">App Updates</a> | <a href="policy.html">Privacy Policy</a> | <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a></p>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
+    <script src="recyclebin.js?v=21.0"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "Advocate Dairy",
+  "short_name": "AdvocateDairy",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d6efd",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/emoji/512/scales-emoji.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://img.icons8.com/emoji/512/scales-emoji.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

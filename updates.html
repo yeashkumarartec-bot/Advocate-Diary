@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Full Update History - Advocate Dairy</title>
-    <link rel="stylesheet" href="style.css?v=21.0">
+    <title>Updates - Advocate Dairy</title>
+    <link rel="stylesheet" href="style.css?v=32.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2996/2996883.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <script src="theme.js"></script>
 </head>
 <body>
     <div class="container">
@@ -19,181 +20,255 @@
         </header>
 
         <main>
-            <h2 style="text-align:center; color:#0d6efd; margin-bottom: 10px;">Development Timeline</h2>
-            <p style="text-align:center; color:#666; margin-bottom: 40px;">A complete serial history from V1.0 to V21.0</p>
+            <h2 style="text-align:center; color:var(--primary); margin-bottom: 30px;">Development Timeline</h2>
             
             <div class="update-list-container">
 
-                <div class="card" style="text-align: left; margin-bottom: 20px; border-left: 5px solid #0d6efd; background-color: #f8fbff;">
-                    <h3 style="color: #0d6efd; margin-top: 0;">✨ Version 21.0: Final Polish & Print</h3>
-                    <p style="color: #666; font-size: 0.85em; font-weight: bold;">Current Version</p>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Smart Print Mode:</strong> Printing now hides all buttons and forms, showing only the clean case list.</li>
-                        <li><strong>Fixed Login UI:</strong> Corrected alignment issues on the login page. Inputs are now full-width.</li>
-                        <li><strong>Universal Footer:</strong> Added "Updates | Policy | Contact" links to every single page.</li>
+<div class="card" style="border-left: 5px solid var(--success); background: var(--bg-card);">
+    <h3>✅ Version 33.0: Popups & Action Buttons Fixed</h3>
+    <p><strong>Current Version</strong></p>
+    <ul>
+        <li><strong>Hidden Popups:</strong> Fixed the bug where "Edit Case" and "Edit Client" forms were appearing at the bottom of the page automatically. Now they are properly hidden.</li>
+        <li><strong>Action Buttons:</strong> Aligned the Action buttons (Edit, Calendar, Email) neatly in a single row so they don't look broken.</li>
+    </ul>
+</div>
+
+<div class="card" style="border-left: 5px solid #ff0000; background: var(--bg-card);">
+    <h3>🛑 Version 32.0: Login & Client Fix</h3>
+    <p><strong>Current Version</strong></p>
+    <ul>
+        <li><strong>Desktop Login Fixed:</strong> Restricted Login box width to 450px so it doesn't stretch across the whole screen on laptops.</li>
+        <li><strong>Clients Mobile Fix:</strong> Applied stacking rules to the 'Add Client' form specifically for mobile devices.</li>
+    </ul>
+</div>
+
+                <div class="card" style="border-left: 5px solid #ff0000; background: var(--bg-card);">
+                    <h3>🛑 Version 31.0: Force Mobile Fix</h3>
+                    <p><strong>Current Version</strong></p>
+                    <ul>
+                        <li><strong>Strict Mobile Layout:</strong> Applied `!important` rules to force all buttons to be full-width on mobile. No more broken layouts.</li>
+                        <li><strong>Universal Button Fix:</strong> Buttons on Dashboard, Clients, and Policy pages are now guaranteed to stack vertically on small screens.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px; border-left: 5px solid #198754;">
-                    <h3 style="color: #198754; margin-top: 0;">📱 Version 20.0: Mobile Overhaul</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card" style="border-left: 5px solid var(--danger);">
+                    <h3>🛠️ Version 30.0: Universal Layout Fix</h3>
+                    <p><strong>December 12, 2025</strong></p>
+                    <ul>
+                        <li><strong>Login Page Fixed:</strong> Login screen is now perfectly centered on both Laptops and Mobiles using Flexbox.</li>
+                        <li><strong>Desktop Actions Fixed:</strong> Resolved the issue where 'Edit/Delete' buttons were not clickable on laptops/desktops.</li>
+                        <li><strong>Responsive Design:</strong> The app layout now adapts flawlessly to any screen size (4K, Laptop, Tablet, Phone).</li>
+                    </ul>
+                </div>
+                
+                <div class="card" style="border-left: 5px solid var(--primary);">
+                    <h3>✨ Version 29.0: Dark Mode Fixes</h3>
+                    <ul>
+                        <li><strong>Text Visibility:</strong> Fixed the issue where text was invisible in Update and Policy pages during Dark Mode.</li>
+                        <li><strong>Mobile Layout:</strong> Fixed header buttons layout on mobile devices to prevent cutting off.</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 5px solid var(--success);">
+                    <h3>🌙 Version 28.0: AMOLED Dark Mode</h3>
+                    <ul>
+                        <li><strong>True Black:</strong> Added Pitch Black background (#000000) for battery saving on AMOLED screens.</li>
+                        <li><strong>Smart Memory:</strong> The app now instantly remembers your theme choice (Light/Dark).</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 5px solid var(--warning);">
+                    <h3>🌗 Version 26.0: Theme Toggle</h3>
+                    <ul>
+                        <li><strong>Magic Button:</strong> Added a toggle button in the header to switch themes.</li>
+                        <li><strong>Auto-Inject:</strong> Script automatically adds the button to all pages.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🛠️ Version 25.0: Mobile Stability</h3>
+                    <ul>
+                        <li><strong>Modal Fix:</strong> Prevented the "Edit Case" form from opening automatically at the bottom of the page.</li>
+                        <li><strong>Responsive:</strong> Buttons now stack correctly on small screens.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>🎨 Version 24.0: Pro UI Design</h3>
+                    <ul>
+                        <li><strong>Glassmorphism:</strong> Added modern shadows and rounded corners.</li>
+                        <li><strong>Gradients:</strong> Replaced flat colors with professional gradients.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>✨ Version 23.0: Animations</h3>
+                    <ul>
+                        <li><strong>Smooth Entry:</strong> Pages now fade in smoothly.</li>
+                        <li><strong>Hover Effects:</strong> Buttons lift up when hovered.</li>
+                    </ul>
+                </div>
+
+                <div class="card" style="border-left: 5px solid var(--primary);">
+                    <h3>🚀 Version 21.0: Final Polish</h3>
+                    <ul>
+                        <li><strong>Smart Print:</strong> Printing now hides all buttons and forms, showing only the clean case list.</li>
+                        <li><strong>Fixed Login UI:</strong> Corrected alignment issues on the login page.</li>
+                        <li><strong>Universal Footer:</strong> Added footer links to every single page.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>📱 Version 20.0: Mobile Overhaul</h3>
+                    <ul>
                         <li><strong>100% Mobile Responsive:</strong> Complete CSS rewrite. Headers now stack vertically on mobile.</li>
                         <li><strong>Table Scroll:</strong> Added horizontal scrolling for tables on small screens.</li>
                         <li><strong>User Names:</strong> Replaced "Welcome Email" with "👋 [Google Name]".</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🛠️ Version 19.0: Code Optimization</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🛠️ Version 19.0: Code Optimization</h3>
+                    <ul>
                         <li><strong>Refactoring:</strong> Merged multiple JavaScript logic blocks for faster performance.</li>
-                        <li><strong>Cache Management:</strong> Updated file versioning to force browsers to load new designs immediately.</li>
+                        <li><strong>Cache Management:</strong> Updated file versioning.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🌐 Version 18.0: PWA Launch</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🌐 Version 18.0: PWA Launch</h3>
+                    <ul>
                         <li><strong>Installable App:</strong> Added `manifest.json`. Users can now install the website as an app.</li>
-                        <li><strong>App Icon:</strong> Set the "Golden Gavel" as the official app icon for mobile home screens.</li>
+                        <li><strong>App Icon:</strong> Set the "Golden Gavel" as the official app icon.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🎨 Version 17.0: Design Refresh</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🎨 Version 17.0: Design Refresh</h3>
+                    <ul>
                         <li><strong>Font Update:</strong> Switched entire app to "Poppins" font family.</li>
-                        <li><strong>Logo Consistency:</strong> Standardized the emoji logo across all headers.</li>
+                        <li><strong>Logo Consistency:</strong> Standardized the emoji logo.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">📅 Version 16.0: Smart Calendar</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>📅 Version 16.0: Smart Calendar</h3>
+                    <ul>
                         <li><strong>Google Calendar:</strong> Added button to save hearing dates to phone calendar.</li>
-                        <li><strong>Deep Linking:</strong> Calendar events now auto-fill with Case No and Court Name.</li>
+                        <li><strong>Deep Linking:</strong> Calendar events now auto-fill with Case No.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">📧 Version 15.0: Smart Email</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>📧 Version 15.0: Smart Email</h3>
+                    <ul>
                         <li><strong>Direct Email:</strong> Added button to draft emails to clients.</li>
-                        <li><strong>Auto-Fill:</strong> Email body now auto-fills with Case details and Next Date.</li>
+                        <li><strong>Auto-Fill:</strong> Email body now auto-fills with Case details.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🖍️ Version 14.0: Color Coding</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🖍️ Version 14.0: Color Coding</h3>
+                    <ul>
                         <li><strong>Color Picker:</strong> Added a tool to change text color for specific cases.</li>
-                        <li><strong>Visual Alerts:</strong> Allows highlighting urgent cases in Red or Green.</li>
+                        <li><strong>Visual Alerts:</strong> Allows highlighting urgent cases.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🔒 Version 13.0: Admin Security</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Security Rules:</strong> Updated Firebase rules to lock Admin Panel to a specific UID.</li>
-                        <li><strong>Access Denied Page:</strong> Added a red alert page for unauthorized access attempts.</li>
+                <div class="card">
+                    <h3>🔒 Version 13.0: Admin Security</h3>
+                    <ul>
+                        <li><strong>Security Rules:</strong> Updated Firebase rules to lock Admin Panel.</li>
+                        <li><strong>Access Denied Page:</strong> Added a red alert page.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">👮‍♂️ Version 12.0: Admin Dashboard</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>👮‍♂️ Version 12.0: Admin Dashboard</h3>
+                    <ul>
                         <li><strong>User Monitoring:</strong> Admin can now see a list of all registered users.</li>
-                        <li><strong>Diary Inspector:</strong> Admin can view the case diary of any user for support.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🗑️ Version 11.0: Permanent Delete</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Hard Delete:</strong> Added functionality to permanently wipe data from the Recycle Bin.</li>
-                        <li><strong>Confirmation Dialogs:</strong> Added "Are you sure?" popups for safety.</li>
+                <div class="card">
+                    <h3>🗑️ Version 11.0: Permanent Delete</h3>
+                    <ul>
+                        <li><strong>Hard Delete:</strong> Added functionality to permanently wipe data.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">♻️ Version 10.0: Recycle Bin Core</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>♻️ Version 10.0: Recycle Bin Core</h3>
+                    <ul>
                         <li><strong>Soft Delete:</strong> Deleting items now moves them to a temporary bin.</li>
                         <li><strong>Restore:</strong> Added the ability to bring back deleted cases.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">✏️ Version 9.0: Client Editing</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Edit Clients:</strong> Added capability to update client details after saving.</li>
-                        <li><strong>Client Deletion:</strong> Added option to remove clients from the list.</li>
+                <div class="card">
+                    <h3>✏️ Version 9.0: Client Editing</h3>
+                    <ul>
+                        <li><strong>Edit Clients:</strong> Added capability to update client details.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🤖 Version 8.0: Auto-Suggest</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Smart Input:</strong> The "Party Name" field now suggests clients from your saved list.</li>
-                        <li><strong>Data Linking:</strong> Linked the Diary input with the Client Database.</li>
+                <div class="card">
+                    <h3>🤖 Version 8.0: Auto-Suggest</h3>
+                    <ul>
+                        <li><strong>Smart Input:</strong> The "Party Name" field now suggests clients.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">👥 Version 7.0: My Clients</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>👥 Version 7.0: My Clients</h3>
+                    <ul>
                         <li><strong>New Page:</strong> Launched "My Clients" page to manage contact info.</li>
-                        <li><strong>Client Database:</strong> Created a separate Firestore collection for client data.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">📊 Version 6.0: Dashboard Stats</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>📊 Version 6.0: Dashboard Stats</h3>
+                    <ul>
                         <li><strong>Counters:</strong> Added "Today's Cases" and "Weekly Cases" counters.</li>
-                        <li><strong>Data Queries:</strong> Implemented complex date queries for statistics.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🏠 Version 5.0: Dashboard UI</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🏠 Version 5.0: Dashboard UI</h3>
+                    <ul>
                         <li><strong>Home Screen:</strong> Created a central landing page after login.</li>
-                        <li><strong>Welcome Message:</strong> Added a greeting area on the dashboard.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🖨️ Version 4.0: Print Feature</h3>
-                    <ul style="padding-left: 20px;">
+                <div class="card">
+                    <h3>🖨️ Version 4.0: Print Feature</h3>
+                    <ul>
                         <li><strong>Print Button:</strong> Added functionality to print the daily cause list.</li>
-                        <li><strong>Print CSS:</strong> Optimized layout to hide buttons during printing.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🔍 Version 3.0: Live Search</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Real-time Filtering:</strong> Added search bar to filter cases by Number or Name instantly.</li>
-                        <li><strong>Debounce:</strong> Optimized search to prevent database overload.</li>
+                <div class="card">
+                    <h3>🔍 Version 3.0: Live Search</h3>
+                    <ul>
+                        <li><strong>Real-time Filtering:</strong> Added search bar to filter cases instantly.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0;">🔐 Version 2.0: Authentication</h3>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Google Login:</strong> Integrated Firebase Auth for secure sign-in.</li>
-                        <li><strong>Data Privacy:</strong> Configured database so users only see their own data.</li>
+                <div class="card">
+                    <h3>🔐 Version 2.0: Authentication</h3>
+                    <ul>
+                        <li><strong>Google Login:</strong> Integrated Firebase Auth.</li>
+                        <li><strong>Data Privacy:</strong> User data isolation.</li>
                     </ul>
                 </div>
 
-                <div class="card" style="text-align: left; margin-bottom: 20px; border-left: 5px solid #6c757d;">
-                    <h3 style="margin-top: 0; color: #666;">🌱 Version 1.0: Inception</h3>
-                    <p style="color: #888; font-size: 0.85em;">September 2025</p>
-                    <ul style="padding-left: 20px;">
-                        <li><strong>Core Logic:</strong> Launched the digital diary with Add/View functionality.</li>
-                        <li><strong>Auto-Forwarding:</strong> Implemented logic to automatically create new cases on next dates.</li>
-                        <li><strong>Database Setup:</strong> Connected app to Google Firestore.</li>
+                <div class="card" style="border-left: 5px solid #6c757d;">
+                    <h3>🌱 Version 1.0: Inception</h3>
+                    <p><strong>September 2025</strong></p>
+                    <ul>
+                        <li><strong>Core Logic:</strong> Launched the digital diary.</li>
+                        <li><strong>Auto-Forwarding:</strong> Implemented next-date logic.</li>
+                        <li><strong>Database Setup:</strong> Connected to Firestore.</li>
                     </ul>
                 </div>
 
@@ -203,11 +278,7 @@
 
     <div class="global-footer">
         <p>Created by Yeash Pandey</p>
-        <p>
-            <a href="login.html">Login</a> | 
-            <a href="policy.html">Privacy Policy</a> | 
-            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
-        </p>
+        <p><a href="login.html">Login</a> | <a href="policy.html">Privacy Policy</a></p>
     </div>
 </body>
 </html>

@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Clients</title>
-    <link rel="stylesheet" href="style.css?v=25.0">
+    <link rel="stylesheet" href="style.css?v=32.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2996/2996883.png">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <script src="theme.js"></script>
 </head>
 <body>
     <div class="container">
@@ -22,19 +24,21 @@
             </div>
         </header>
         <main>
-            <h2 style="text-align:center; color:#0d6efd;">My Clients</h2>
-            <div class="client-form-container" style="background:#f8f9fa; padding:15px; border-radius:8px; margin-bottom:20px;">
-                <h3 style="margin-top:0;">Add New Client</h3>
+            <h2 style="text-align:center; color:var(--primary);">My Clients</h2>
+            
+            <div class="client-form-container">
+                <h3 style="margin-top:0; color:var(--text-main);">Add New Client</h3>
                 <form id="addClientForm" style="display:grid; gap:10px;">
                     <input type="text" id="clientName" placeholder="Full Name" required>
                     <input type="tel" id="clientMobile" placeholder="Mobile Number" required>
                     <input type="email" id="clientEmail" placeholder="Email (Optional)">
                     <input type="text" id="clientAddress" placeholder="Address (Optional)">
-                    <button type="submit" style="background:#198754; color:white; border:none; padding:12px; border-radius:5px; font-weight:bold;">Save Client</button>
+                    <button type="submit" style="background:var(--success); color:white; border:none; padding:12px; border-radius:5px; font-weight:bold;">Save Client</button>
                 </form>
-                <p id="clientFormSuccess" style="display:none; color:green; margin-top:10px;">Saved!</p>
+                <p id="clientFormSuccess" style="display:none; color:var(--success); margin-top:10px;">Saved!</p>
             </div>
-            <h3 style="color:#333;">Saved Clients</h3>
+
+            <h3 style="color:var(--text-main);">Saved Clients</h3>
             <div class="table-container">
                 <table>
                     <thead><tr><th>Name</th><th>Mobile</th><th>Email</th><th>Address</th><th>Action</th></tr></thead>
@@ -54,7 +58,7 @@
                 <input type="tel" id="editClientMobile" placeholder="Mobile" required>
                 <input type="email" id="editClientEmail" placeholder="Email">
                 <input type="text" id="editClientAddress" placeholder="Address">
-                <button type="submit" style="background:#0d6efd; color:white; padding:12px; border:none; border-radius:5px;">Update</button>
+                <button type="submit" style="background:var(--primary); color:white; padding:12px; border:none; border-radius:5px;">Update</button>
             </form>
         </div>
     </div>

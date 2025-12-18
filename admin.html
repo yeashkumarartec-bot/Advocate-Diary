@@ -3,48 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Advocate Dairy</title>
-    <link rel="stylesheet" href="style.css?v=36.0">
-    <script src="theme.js"></script>
-    
+    <title>Admin Dashboard - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=42.0">
+    <meta name="theme-color" content="#0d6efd">
     <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
-    <link rel="apple-touch-icon" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <script src="theme.js"></script>
 </head>
 <body>
-    <div class="container" style="border-top: 5px solid #d32f2f;">
+    <div class="container">
         <header>
-            <h1><span class="logo-icon">👮‍♂️</span> Admin</h1>
+            <h1><span class="logo-icon">👮‍♂️</span> Admin Panel</h1>
             <div class="header-controls">
-                <span id="adminEmail">Checking...</span>
-                <a href="dashboard.html" class="header-link">Back</a>
-                <button id="btnLogout">Logout</button>
+                <span id="adminEmail" style="color:var(--primary); font-weight:bold;">Admin</span>
+                <a href="index.html" class="header-link">Back to Diary</a>
+                <button id="btnLogout" style="background:var(--danger); color:white;">Logout</button>
             </div>
         </header>
-        <main id="adminMain" style="display:none;">
-            <div id="usersListSection">
-                <h2>All Users</h2>
-                <div class="table-container"><table><thead><tr><th>Email</th><th>Mobile</th><th>Action</th></tr></thead><tbody id="usersTableBody"></tbody></table></div>
-            </div>
-            <div id="userDiarySection" style="display:none; margin-top:30px; border-top: 2px dashed #ccc; padding-top:20px; background-color: #fff9f9;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <h2 id="diaryTitle" style="color:#d32f2f;">Diary</h2>
-                    <button id="closeDiaryBtn" class="header-link" style="background:#6c757d; color:white;">Close</button>
+
+        <main>
+            <h2 style="text-align:center; color:var(--text-main);">All Registered Users</h2>
+            
+            <div class="controls-wrapper">
+                <div class="search-container" style="width:100%;">
+                    <label>Search User:</label>
+                    <input type="text" id="adminSearch" placeholder="Search by email...">
                 </div>
-                <div class="table-container"><table><thead><tr><th>Case No</th><th>Party</th><th>Date</th><th>Status</th></tr></thead><tbody id="adminCaseTable"></tbody></table></div>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Created At</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="4">Loading users...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </main>
-        <p id="accessDenied" style="display:none; color:red; text-align:center;">ACCESS DENIED</p>
+    </div>
+
+    <div id="userModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeUserModal">&times;</span>
+            <h2 style="color:var(--primary); margin-top:0;">User Details</h2>
+            
+            <div id="userDetailsContent" style="margin-bottom: 20px;">
+                </div>
+
+            <h3 style="margin-top:20px; border-top:1px solid var(--border-color); padding-top:10px;">User's Cases</h3>
+            <div class="table-container" style="max-height: 300px; overflow-y: auto;">
+                <table style="font-size: 0.9em;">
+                    <thead>
+                        <tr>
+                            <th>Case No</th>
+                            <th>Party</th>
+                            <th>Next Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userCasesTableBody">
+                        </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top:20px; text-align:right;">
+                <button id="closeModalBtn" style="background:var(--text-light); color:white; padding:8px 16px; border-radius:6px;">Close</button>
+            </div>
+        </div>
     </div>
 
     <div class="global-footer">
-        <p>Created by Yeash Pandey</p>
-        <p><a href="updates.html">App Updates</a> | <a href="policy.html">Privacy Policy</a> | <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a></p>
+        <p>Admin Console</p>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
-    <script src="admin.js?v=21.0"></script>
+    
+    <script>
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", 
+            authDomain: "advocate-diary-co.firebaseapp.com", 
+            projectId: "advocate-diary-co", 
+            storageBucket: "advocate-diary-co.appspot.com", 
+            messagingSenderId: "809588634104", 
+            appId: "1:809588634104:web:f5d4838294ad602aeb660d", 
+            measurementId: "G-53VM0EZCWC" 
+        }; 
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="admin.js"></script>
 </body>
 </html>

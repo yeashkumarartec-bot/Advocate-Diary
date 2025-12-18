@@ -1,38 +1,140 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const auth = firebase.auth(); const db = firebase.firestore();
-    const ADMIN_UID = "hMGcI2FMfCTmgs4rglCgihZsU8m1"; 
-    const els = { userBody: document.getElementById('usersTableBody'), diarySec: document.getElementById('userDiarySection'), caseTable: document.getElementById('adminCaseTable'), title: document.getElementById('diaryTitle'), main: document.getElementById('adminMain'), denied: document.getElementById('accessDenied') };
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
+    // DOM Elements
+    const usersTableBody = document.getElementById('usersTableBody');
+    const adminEmailDisplay = document.getElementById('adminEmail');
+    const btnLogout = document.getElementById('btnLogout');
+    const adminSearch = document.getElementById('adminSearch');
+    
+    // Modal Elements
+    const userModal = document.getElementById('userModal');
+    const closeUserModal = document.getElementById('closeUserModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const userDetailsContent = document.getElementById('userDetailsContent');
+    const userCasesTableBody = document.getElementById('userCasesTableBody');
+
+    // 🔒 ADMIN EMAILS (सब छोटे अक्षरों में लिखें)
+    // अपनी ईमेल यहाँ चेक कर लो, अगर स्पेलिंग गलत है तो सही कर लेना!
+    const ADMIN_EMAILS = [
+        "contact.advocatediary@gmail.com"
+    ]; 
+
+    // --- 1. AUTH CHECK (SMART FIX) ---
     auth.onAuthStateChanged(user => {
         if (user) {
-            if(user.uid !== ADMIN_UID) { els.denied.style.display = 'block'; setTimeout(() => window.location.href = 'dashboard.html', 2000); }
-            else { document.getElementById('adminEmail').textContent = "Admin Mode"; els.main.style.display = 'block'; loadUsers(); }
-        } else { window.location.href = 'login.html'; }
+            // ईमेल को छोटा (lowercase) करके चेक करेंगे
+            const currentEmail = user.email.toLowerCase();
+
+            if (ADMIN_EMAILS.includes(currentEmail)) {
+                adminEmailDisplay.textContent = `Admin: ${user.email}`;
+                loadAllUsers();
+            } else {
+                // अगर अब भी फेल हुआ, तो अलर्ट में दिखेगा कि आप किस ईमेल से आए हो
+                alert(`Access Denied!\n\nYou are logged in as: ${user.email}\n\nThis email is not in the Admin List.`);
+                window.location.href = 'index.html';
+            }
+        } else {
+            window.location.href = 'login.html';
+        }
     });
 
-    document.getElementById('btnLogout').addEventListener('click', () => auth.signOut().then(() => window.location.href='login.html'));
-
-    async function loadUsers() {
-        els.userBody.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
+    // --- 2. LOAD USERS ---
+    async function loadAllUsers() {
+        usersTableBody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
         try {
-            const snap = await db.collection('user_profiles').orderBy('lastLogin', 'desc').get();
+            const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
+            
+            if (snapshot.empty) {
+                usersTableBody.innerHTML = '<tr><td colspan="4">No registered users found.</td></tr>';
+                return;
+            }
+
             let html = '';
-            snap.forEach(doc => { const u = doc.data(); html += `<tr><td>${u.email}</td><td>${u.mobile||'-'}</td><td><button class="action-btn edit-btn" onclick="view('${u.uid}','${u.email}')">👁️</button></td></tr>`; });
-            els.userBody.innerHTML = html;
-        } catch (e) { els.userBody.innerHTML = '<tr><td colspan="3">Error</td></tr>'; }
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const created = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                const status = data.isVerified ? '<span style="color:var(--success);">Verified</span>' : '<span style="color:var(--warning);">Pending</span>';
+                
+                html += `
+                    <tr>
+                        <td style="font-weight:600;">${data.email}</td>
+                        <td>${created}</td>
+                        <td>${status}</td>
+                        <td>
+                            <button class="action-btn view-btn" onclick="viewUser('${doc.id}', '${data.email}')">👁️</button>
+                        </td>
+                    </tr>
+                `;
+            });
+            usersTableBody.innerHTML = html;
+
+        } catch (error) {
+            console.error("Error loading users:", error);
+            usersTableBody.innerHTML = `<tr><td colspan="4" style="color:red;">Error: ${error.message}</td></tr>`;
+        }
     }
 
-    window.view = async (uid, email) => {
-        els.diarySec.style.display = 'block'; els.title.textContent = `User: ${email}`; els.caseTable.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
-        els.diarySec.scrollIntoView({ behavior: 'smooth' });
+    // --- 3. VIEW USER DETAILS (MODAL) ---
+    window.viewUser = async function(userId, email) {
+        userModal.style.display = 'block';
+        userDetailsContent.innerHTML = `<p><strong>Email:</strong> ${email}</p><p>Loading cases...</p>`;
+        userCasesTableBody.innerHTML = '';
+
         try {
-            const snap = await db.collection('users').doc(uid).collection('cases').orderBy('current_date', 'desc').limit(50).get();
-            if(snap.empty) { els.caseTable.innerHTML = '<tr><td colspan="4">No cases.</td></tr>'; return; }
-            let html = '';
-            snap.forEach(doc => { const c = doc.data(); html += `<tr><td>${c.caseNo}</td><td>${c.partyName}</td><td>${c.nextDate||c.current_date}</td><td>${c.isDeleted?'Deleted':(c.isClosed?'Closed':'Active')}</td></tr>`; });
-            els.caseTable.innerHTML = html;
-        } catch (e) { alert("Error"); }
+            const casesSnap = await db.collection('users').doc(userId).collection('cases')
+                                      .orderBy('current_date', 'desc').limit(20).get();
+
+            let casesHtml = '';
+            if (casesSnap.empty) {
+                casesHtml = '<tr><td colspan="3">No cases found for this user.</td></tr>';
+            } else {
+                casesSnap.forEach(doc => {
+                    const c = doc.data();
+                    casesHtml += `
+                        <tr>
+                            <td>${c.caseNo}</td>
+                            <td>${c.partyName}</td>
+                            <td>${c.nextDate || c.current_date}</td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            userDetailsContent.innerHTML = `<p style="font-size:1.1em;"><strong>User:</strong> ${email}</p>`;
+            userCasesTableBody.innerHTML = casesHtml;
+
+        } catch (error) {
+            console.error("Error fetching cases:", error);
+            userDetailsContent.innerHTML += `<p style="color:red;">Error loading cases.</p>`;
+        }
     };
 
-    document.getElementById('closeDiaryBtn').onclick = () => els.diarySec.style.display = 'none';
+    // --- 4. SEARCH LOGIC ---
+    if(adminSearch) {
+        adminSearch.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const rows = usersTableBody.getElementsByTagName('tr');
+            Array.from(rows).forEach(row => {
+                const emailCell = row.getElementsByTagName('td')[0];
+                if (emailCell) {
+                    const email = emailCell.textContent.toLowerCase();
+                    row.style.display = email.includes(term) ? '' : 'none';
+                }
+            });
+        });
+    }
+
+    // --- 5. MODAL CLOSE LOGIC ---
+    closeUserModal.onclick = () => userModal.style.display = 'none';
+    closeModalBtn.onclick = () => userModal.style.display = 'none';
+    window.onclick = (e) => {
+        if (e.target == userModal) userModal.style.display = 'none';
+    }
+
+    // Logout
+    btnLogout.addEventListener('click', () => {
+        auth.signOut().then(() => window.location.href = 'login.html');
+    });
 });

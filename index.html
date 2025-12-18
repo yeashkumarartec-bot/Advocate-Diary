@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advocate Dairy</title>
-    <link rel="stylesheet" href="style.css?v=32.0">
-    <script src="theme.js"></script>
+    <title>Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=38.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2996/2996883.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <script src="theme.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+            <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
             <div class="header-controls">
                 <span id="userEmail">Loading...</span>
                 <a href="clients.html" class="header-link">My Clients</a>
@@ -24,71 +24,105 @@
                 <button id="btnLogout">Logout</button>
             </div>
         </header>
+
         <main>
             <div class="controls-wrapper">
-                <div class="date-selector"><label>Date:</label> <input type="date" id="currentDate"></div>
-                <div class="search-container"><input type="text" id="searchInput" placeholder="Search Case/Party..."></div>
+                <div class="date-selector">
+                    <label for="currentDate">Date:</label>
+                    <input type="date" id="currentDate">
+                </div>
+                <div class="search-container">
+                    <label for="searchInput">Search:</label>
+                    <input type="text" id="searchInput" placeholder="Search Case/Party...">
+                </div>
             </div>
-            <h2 id="displayDate" style="text-align:center; color:#0d6efd; margin-bottom:15px;">Today's Cases</h2>
+
+            <h2 id="displayDate" style="text-align:center; color:var(--primary); margin-bottom: 20px;">Cases</h2>
+
             <div class="table-container">
                 <table>
-                    <thead><tr><th>Prev Date</th><th>Case No</th><th>Year</th><th>Court</th><th>Nature</th><th>Party</th><th>Purpose</th><th>Next Date</th><th>Actions</th></tr></thead>
-                    <tbody id="caseTableBody"></tbody>
+                    <thead>
+                        <tr>
+                            <th>Prev Date</th>
+                            <th>Case No</th>
+                            <th>Year</th>
+                            <th>Court</th>
+                            <th>Nature</th>
+                            <th>Party</th>
+                            <th>Purpose</th>
+                            <th>Next Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="caseTableBody">
+                        </tbody>
                 </table>
             </div>
-            <div class="icon-legend">
-                <span class="legend-item">✏️ Edit</span> <span class="legend-item">📅 Calendar</span>
-                <span class="legend-item">📧 Email</span> <span class="legend-item">✅ Close</span> <span class="legend-item">🗑️ Delete</span>
-            </div>
+
+            <footer>
+                <h3>Add New Case</h3>
+                <form id="addCaseForm">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                        <label>Color:</label>
+                        <input type="color" id="caseColor" value="#000000" style="width:50px;padding:5px;height:48px;">
+                    </div>
+                    <input type="text" id="caseNo" placeholder="Case No" required>
+                    <input type="text" id="year" placeholder="Year" required>
+                    <input type="text" id="courtName" placeholder="Court" required>
+                    <input type="text" id="nature" placeholder="Nature">
+                    <input type="text" id="partyName" placeholder="Party Name" list="clientList" required>
+                    <datalist id="clientList"></datalist>
+                    <input type="text" id="addDateFixedFor" placeholder="Purpose" required>
+                    
+                    <div>
+                        <label style="font-size:0.8em; color:var(--text-light);">First Date:</label>
+                        <input type="date" id="firstDate" required>
+                    </div>
+                    
+                    <button type="submit">Add Case</button>
+                </form>
+            </footer>
         </main>
-        <footer>
-            <h3>Add New Case</h3>
-            <form id="addCaseForm">
-                <div class="color-picker-wrapper" style="grid-column: 1/-1;">
-                    <label>Color:</label> <input type="color" id="caseColor" value="#000000" style="width:50px; height:35px;">
-                </div>
-                <input type="text" id="caseNo" placeholder="Case No" required>
-                <input type="number" id="year" placeholder="Year" required>
-                <input type="text" id="courtName" placeholder="Court" required>
-                <input type="text" id="nature" placeholder="Nature" required>
-                <input type="text" id="partyName" list="clientList" placeholder="Party Name" required>
-                <input type="text" id="addDateFixedFor" placeholder="Purpose" required>
-                <div><label style="font-size:0.8em">First Date:</label><input type="date" id="firstDate" required></div>
-                <button type="submit">Add Case</button>
-                <datalist id="clientList"></datalist>
-            </form>
-        </footer>
     </div>
 
     <div id="editModal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="closeEditModal">&times;</span>
             <h2>Edit Case</h2>
-            <form id="editCaseForm" style="display:grid; gap:10px;">
+            <form id="editCaseForm" style="display:grid; gap:12px;">
                 <input type="hidden" id="editCaseId">
-                <label>Color:</label><input type="color" id="editCaseColor" style="width:100%">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <label>Color:</label>
+                    <input type="color" id="editCaseColor" style="width:50px;padding:2px;height:40px;">
+                </div>
                 <input type="text" id="editCaseNo" placeholder="Case No" required>
-                <input type="number" id="editYear" placeholder="Year" required>
+                <input type="text" id="editYear" placeholder="Year" required>
                 <input type="text" id="editCourtName" placeholder="Court" required>
-                <input type="text" id="editNature" placeholder="Nature" required>
+                <input type="text" id="editNature" placeholder="Nature">
                 <input type="text" id="editPartyName" placeholder="Party Name" required>
-                <label>Prev Date:</label><input type="date" id="editPreviousDate" readonly>
-                <input type="text" id="editDateFixedFor" placeholder="Purpose">
-                <label>Next Date:</label><input type="date" id="editNextDate">
-                <button type="submit" style="background:#0d6efd; color:white; padding:10px; border:none; border-radius:5px;">Save Changes</button>
+                
+                <label style="font-size:0.9em;">Prev Date:</label>
+                <input type="date" id="editPreviousDate">
+                
+                <input type="text" id="editDateFixedFor" placeholder="Purpose" required>
+                
+                <label style="font-size:0.9em; color:var(--primary); font-weight:bold;">Next Date:</label>
+                <input type="date" id="editNextDate">
+                
+                <button type="submit" style="background:var(--primary); color:white; padding:12px; border:none; border-radius:8px;">Update</button>
             </form>
         </div>
     </div>
-    
+
     <div class="global-footer">
         <p>Created by Yeash Pandey</p>
         <p><a href="updates.html">App Updates</a> | <a href="policy.html">Privacy Policy</a> | <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a></p>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
-    <script src="script.js?v=25.0"></script>
+    <script src="script.js"></script>
 </body>
 </html>

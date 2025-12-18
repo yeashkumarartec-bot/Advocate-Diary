@@ -1,13 +1,12 @@
-// --- 1. INSTANT THEME CHECK ---
-(function() {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-    }
-})();
-
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // --- 1. INSTANT THEME CHECK ---
+    (function() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+    })();
+
     // --- 2. TOGGLE BUTTON LOGIC ---
     const headerControls = document.querySelector('.header-controls');
     if (headerControls && !document.getElementById('themeToggle')) {
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         headerControls.insertBefore(btn, headerControls.firstChild);
     }
 
-    // --- 3. FIREBASE & APP LOGIC ---
+    // --- 3. FIREBASE SERVICES ---
     const auth = firebase.auth(); 
     const db = firebase.firestore();
     let userCasesCollection = null; 
@@ -56,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clientList: document.getElementById('clientList') 
     };
 
+    // --- AUTHENTICATION ---
     auth.onAuthStateChanged(user => {
         if (user) {
             currentUserId = user.uid;
@@ -76,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(elements.logoutBtn) elements.logoutBtn.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'login.html'));
 
+    // --- INITIALIZE PAGE ---
     function initializePage() {
         elements.currentDate.value = new Date().toISOString().split('T')[0];
         displayCases(elements.currentDate.value);
@@ -92,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const printBtn = document.getElementById('btnPrint');
         if(printBtn) printBtn.addEventListener('click', () => window.print());
         
-        // CLICK HANDLER FIX (For Desktop & Mobile)
         elements.tableBody.addEventListener('click', handleActions);
         
         const modal = document.getElementById('editModal');
@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if(elements.clientList) { elements.clientList.innerHTML = ''; snap.forEach(doc => { const opt = document.createElement('option'); opt.value = doc.data().name; elements.clientList.appendChild(opt); }); }
     }
 
+    // --- CORE FUNCTIONS ---
     async function addCase(e) {
         e.preventDefault();
         const data = {
@@ -143,33 +144,74 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!dataArray.length) { elements.tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px;">No cases found.</td></tr>'; return; }
         let html = '';
         dataArray.forEach(c => {
-            const id = c.id; const safe = encodeURIComponent(JSON.stringify(c));
+            const id = c.id; 
+            const safe = encodeURIComponent(JSON.stringify(c)); // Full object for both buttons
+            
             let btns = `<div class="action-cell">
                 <button type="button" class="action-btn edit-btn" data-id="${id}">✏️</button>
                 <button type="button" class="action-btn calendar-btn" data-id="${id}" data-case="${safe}">📅</button>
                 <button type="button" class="action-btn email-btn" data-id="${id}" data-case="${safe}">📧</button>`;
+            
             if(!c.isClosed && !c.nextDate) btns += `<button type="button" class="action-btn close-btn" data-id="${id}">✅</button>`;
             btns += `<button type="button" class="action-btn delete-btn" data-id="${id}">🗑️</button></div>`;
             if(c.nextDate) btns += `<span style="color:var(--success);font-weight:bold;margin-left:5px;">Done</span>`;
+            
             html += `<tr class="${c.isClosed?'case-closed':''}" style="color:${c.fontColor||'inherit'}"><td>${formatDate(c.previousDate)}</td><td>${c.caseNo}</td><td>${c.year}</td><td>${c.courtName}</td><td>${c.nature}</td><td>${c.partyName}</td><td>${c.dateFixedFor}</td><td>${formatDate(c.nextDate)}</td><td>${btns}</td></tr>`;
         });
         elements.tableBody.innerHTML = html;
     }
 
+    // --- (FIXED) SMART ACTION HANDLERS ---
     function handleActions(e) {
-        // Find the button (even if icon is clicked)
-        const btn = e.target.closest('button'); 
-        if(!btn) return;
-        
-        // Stop bubbling (Fix for Desktop Clicks)
+        const btn = e.target.closest('button'); if(!btn) return;
         e.stopPropagation();
-
         const id = btn.dataset.id;
-        if(btn.classList.contains('delete-btn')) { if(confirm('Recycle Bin?')) { userCasesCollection.doc(id).update({isDeleted:true}).then(() => { allCasesCache = []; displayCases(elements.currentDate.value); }); } }
-        else if(btn.classList.contains('close-btn')) { userCasesCollection.doc(id).update({isClosed:true}).then(() => displayCases(elements.currentDate.value)); }
+        
+        if(btn.classList.contains('delete-btn')) { 
+            if(confirm('Recycle Bin?')) { userCasesCollection.doc(id).update({isDeleted:true}).then(() => { allCasesCache = []; displayCases(elements.currentDate.value); }); } 
+        }
+        else if(btn.classList.contains('close-btn')) { 
+            userCasesCollection.doc(id).update({isClosed:true}).then(() => displayCases(elements.currentDate.value)); 
+        }
         else if(btn.classList.contains('edit-btn')) { openEdit(id); }
-        else if(btn.classList.contains('calendar-btn')) { const c = JSON.parse(decodeURIComponent(btn.dataset.case)); window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(c.partyName)}&details=${encodeURIComponent(c.caseNo)}&dates=${c.current_date.replace(/-/g,'')}/${c.current_date.replace(/-/g,'')}`, '_blank'); }
-        else if(btn.classList.contains('email-btn')) { const c = JSON.parse(decodeURIComponent(btn.dataset.case)); window.location.href = `mailto:?subject=Case Update&body=Case No: ${c.caseNo}`; }
+        
+        // --- CALENDAR LOGIC ---
+        else if(btn.classList.contains('calendar-btn')) { 
+            try {
+                const c = JSON.parse(decodeURIComponent(btn.dataset.case)); 
+                const title = `Court: ${c.partyName} (Case: ${c.caseNo})`;
+                const details = `Court: ${c.courtName} | Nature: ${c.nature} | Purpose: ${c.dateFixedFor} | Previous Date: ${formatDate(c.previousDate)}`;
+                // Remove dashes for Google format YYYYMMDD
+                const dateStr = c.current_date.replace(/-/g,''); 
+                const dates = `${dateStr}/${dateStr}`; // All Day Event
+                
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(details)}&dates=${dates}`;
+                window.open(url, '_blank'); 
+            } catch(err) { alert("Error opening calendar"); }
+        }
+        
+        // --- EMAIL LOGIC (Smart Fill) ---
+        else if(btn.classList.contains('email-btn')) { 
+            try {
+                const c = JSON.parse(decodeURIComponent(btn.dataset.case));
+                const subject = `Case Update: ${c.partyName} (Case No: ${c.caseNo})`;
+                
+                // Detailed Body
+                let body = `Dear ${c.partyName},\n\nHere is an update regarding your court case.\n\n`;
+                body += `🏛 Court: ${c.courtName}\n`;
+                body += `📂 Case No: ${c.caseNo} / ${c.year}\n`;
+                body += `📅 Hearing Date: ${formatDate(c.current_date)}\n`;
+                body += `📝 Purpose: ${c.dateFixedFor}\n`;
+                
+                if(c.nextDate) {
+                    body += `⏭️ Next Hearing: ${formatDate(c.nextDate)}\n`;
+                }
+                
+                body += `\nPlease contact us for further details.\n\nRegards,\nAdvocate`;
+                
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`; 
+            } catch(err) { alert("Error opening email"); }
+        }
     }
 
     async function openEdit(id) {

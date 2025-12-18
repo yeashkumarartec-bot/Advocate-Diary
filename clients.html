@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Clients</title>
-    <link rel="stylesheet" href="style.css?v=32.0">
+    <title>My Clients - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=38.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2996/2996883.png">
     <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
     <script src="theme.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+            <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
             <div class="header-controls">
                 <span id="userEmail">Loading...</span>
                 <a href="dashboard.html" class="header-link">Dashboard</a> 
@@ -28,12 +27,12 @@
             
             <div class="client-form-container">
                 <h3 style="margin-top:0; color:var(--text-main);">Add New Client</h3>
-                <form id="addClientForm" style="display:grid; gap:10px;">
+                <form id="addClientForm">
                     <input type="text" id="clientName" placeholder="Full Name" required>
                     <input type="tel" id="clientMobile" placeholder="Mobile Number" required>
                     <input type="email" id="clientEmail" placeholder="Email (Optional)">
                     <input type="text" id="clientAddress" placeholder="Address (Optional)">
-                    <button type="submit" style="background:var(--success); color:white; border:none; padding:12px; border-radius:5px; font-weight:bold;">Save Client</button>
+                    <button type="submit">Save Client</button>
                 </form>
                 <p id="clientFormSuccess" style="display:none; color:var(--success); margin-top:10px;">Saved!</p>
             </div>
@@ -52,13 +51,13 @@
         <div class="modal-content">
             <span class="close-button" id="closeEditClientModal">&times;</span>
             <h2>Edit Client</h2>
-            <form id="editClientForm" style="display:grid; gap:10px;">
+            <form id="editClientForm" style="display:grid; gap:12px;">
                 <input type="hidden" id="editClientId">
                 <input type="text" id="editClientName" placeholder="Name" required>
                 <input type="tel" id="editClientMobile" placeholder="Mobile" required>
                 <input type="email" id="editClientEmail" placeholder="Email">
                 <input type="text" id="editClientAddress" placeholder="Address">
-                <button type="submit" style="background:var(--primary); color:white; padding:12px; border:none; border-radius:5px;">Update</button>
+                <button type="submit" style="background:var(--primary); color:white; padding:12px; border:none; border-radius:8px;">Update</button>
             </form>
         </div>
     </div>
@@ -72,6 +71,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>const firebaseConfig = { apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", authDomain: "advocate-diary-co.firebaseapp.com", projectId: "advocate-diary-co", storageBucket: "advocate-diary-co.appspot.com", messagingSenderId: "809588634104", appId: "1:809588634104:web:f5d4838294ad602aeb660d", measurementId: "G-53VM0EZCWC" }; firebase.initializeApp(firebaseConfig);</script>
-    <script src="clients.js?v=21.0"></script>
+    <script src="clients.js"></script>
 </body>
 </html>

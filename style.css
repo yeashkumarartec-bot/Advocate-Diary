@@ -1,20 +1,38 @@
-/* === Version 33.0 (Popup & Button Fix) === */
+/* === Version 42.0 (Mobile Search Height Fix) === */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* --- VARIABLES --- */
 :root {
-    --primary: #2563eb; --primary-dark: #1d4ed8; --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
-    --bg-body: #f3f4f6; --bg-card: #ffffff; --bg-input: #ffffff;
-    --text-main: #111827; --text-light: #6b7280; --text-muted: #4b5563;
-    --border-color: #e5e7eb; --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --primary: #2563eb; 
+    --primary-dark: #1d4ed8; 
+    --success: #10b981; 
+    --danger: #ef4444; 
+    --warning: #f59e0b;
+    --bg-body: #f3f4f6; 
+    --bg-card: #ffffff; 
+    --bg-input: #ffffff;
+    --text-main: #111827; 
+    --text-light: #6b7280; 
+    --text-muted: #4b5563;
+    --border-color: #e5e7eb; 
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --table-hover: #f1f5f9;
 }
 
 [data-theme="dark"] {
-    --primary: #60a5fa; --primary-dark: #3b82f6; --success: #34d399; --danger: #f87171; --warning: #fbbf24;
-    --bg-body: #000000; --bg-card: #111111; --bg-input: #1f1f1f;
-    --text-main: #ffffff; --text-light: #e5e7eb; --text-muted: #9ca3af;
-    --border-color: #333333; --shadow-md: 0 0 0 1px #333333;
+    --primary: #60a5fa; 
+    --primary-dark: #3b82f6; 
+    --success: #34d399; 
+    --danger: #f87171; 
+    --warning: #fbbf24;
+    --bg-body: #000000;       
+    --bg-card: #111111;       
+    --bg-input: #1f1f1f;      
+    --text-main: #ffffff; 
+    --text-light: #e5e7eb; 
+    --text-muted: #9ca3af;
+    --border-color: #333333; 
+    --shadow-md: 0 0 0 1px #333333;
     --table-hover: #1a1a1a;
 }
 
@@ -27,9 +45,10 @@ body {
     margin: 0; 
     padding: 20px; 
     min-height: 100vh;
+    transition: background 0.3s, color 0.3s;
 }
 
-/* CONTAINER */
+/* --- CONTAINER --- */
 .container { 
     max-width: 1400px; 
     width: 100%; 
@@ -42,7 +61,7 @@ body {
     animation: fadeIn 0.5s ease-out; 
 }
 
-/* HEADER */
+/* --- HEADER --- */
 header { 
     display: flex; 
     justify-content: space-between; 
@@ -53,24 +72,57 @@ header {
     gap: 20px; 
     flex-wrap: wrap; 
 }
-header h1 { margin: 0; font-size: clamp(1.4rem, 4vw, 1.8rem); color: var(--primary); display: flex; align-items: center; }
+
+header h1 { 
+    margin: 0; 
+    font-size: clamp(1.4rem, 4vw, 1.8rem); 
+    color: var(--primary); 
+    display: flex; 
+    align-items: center; 
+}
+
 .logo-icon { font-size: 1.2em; margin-right: 10px; }
 .header-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
-#userEmail { background: var(--bg-input); color: var(--primary); padding: 8px 16px; border-radius: 50px; font-weight: 600; border: 1px solid var(--border-color); white-space: nowrap; }
-
-/* BUTTONS */
-button, .header-link, .print-btn, .action-btn { font-family: 'Poppins', sans-serif; transition: 0.2s; cursor: pointer; border: none; outline: none; }
-.header-link, #btnLogout, .print-btn { 
-    text-decoration: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; 
-    text-align: center; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; 
-    background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color);
+#userEmail { 
+    background: var(--bg-input); 
+    color: var(--primary); 
+    padding: 8px 16px; 
+    border-radius: 50px; 
+    font-weight: 600; 
+    border: 1px solid var(--border-color); 
+    white-space: nowrap; 
 }
+
+/* --- BUTTONS --- */
+button, .header-link, .print-btn, .action-btn { 
+    font-family: 'Poppins', sans-serif; 
+    transition: 0.2s; 
+    cursor: pointer; 
+    border: none; 
+    outline: none; 
+}
+
+.header-link, #btnLogout, .print-btn { 
+    text-decoration: none; 
+    padding: 10px 20px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    text-align: center; 
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    white-space: nowrap; 
+    background: var(--bg-input); 
+    color: var(--text-main); 
+    border: 1px solid var(--border-color);
+}
+
 .header-link:hover { border-color: var(--primary); color: var(--primary); }
 .print-btn { background: var(--success); color: white; border: none; }
 #btnLogout { background: var(--danger); color: white; border: none; }
 
-/* UPDATE & POLICY TEXT FIX */
+/* --- TEXT CONTENT --- */
 h1, h2, h3, h4, strong { color: var(--text-main); }
 p, li { color: var(--text-light); line-height: 1.6; }
 .update-list-container .card {
@@ -83,118 +135,113 @@ p, li { color: var(--text-light); line-height: 1.6; }
     text-align: left;
 }
 
-/* INPUTS */
+/* --- CONTROLS WRAPPER --- */
+.controls-wrapper { 
+    display: flex; 
+    gap: 20px; 
+    flex-wrap: wrap; 
+    margin-bottom: 25px; 
+    background: var(--bg-body); 
+    padding: 20px; 
+    border-radius: 12px; 
+    border: 1px solid var(--border-color); 
+    align-items: flex-end; 
+}
+
+.date-selector, .search-container { display: flex; flex-direction: column; gap: 8px; }
+.date-selector label, .search-container label { font-weight: 600; font-size: 0.9em; color: var(--text-light); margin-left: 4px; }
+.date-selector { flex: 0 0 auto; }
+
+/* THIS LINE WAS THE PROBLEM ON MOBILE (Fixed below in media query) */
+.search-container { flex: 1 1 300px; }
+
 input, select {
     padding: 12px 15px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95em;
-    background-color: var(--bg-input); color: var(--text-main); font-family: inherit; width: 100%;
+    background-color: var(--bg-input); color: var(--text-main); font-family: inherit; width: 100%; height: 48px;
 }
-.search-container { flex-grow: 1; min-width: 250px; }
+input:focus, select:focus { border-color: var(--primary); outline: none; }
+[data-theme="dark"] ::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.8; cursor: pointer; }
 
-/* TABLES */
+/* --- TABLES --- */
 .table-container { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 12px; background: var(--bg-card); border: 1px solid var(--border-color); }
 table { width: 100%; border-collapse: collapse; min-width: 900px; }
 th { background-color: var(--bg-body); color: var(--text-light); padding: 16px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
 td { padding: 16px; border-bottom: 1px solid var(--border-color); color: var(--text-main); vertical-align: middle; }
 tbody tr:hover { background-color: var(--table-hover); cursor: pointer; }
 
-/* 🛑 ACTION BUTTONS FIXED (Aligned & Compact) 🛑 */
-.action-cell { 
-    display: flex; 
-    align-items: center; 
-    gap: 6px; 
-    white-space: nowrap; /* Buttons won't break line */
-}
+/* --- ACTION BUTTONS --- */
+.action-cell { display: flex; gap: 6px; align-items: center; }
 .action-btn { 
-    width: 34px; height: 34px; /* Slightly smaller to fit better */
-    min-width: 34px; 
-    border-radius: 6px; 
-    background: var(--bg-input); 
-    border: 1px solid var(--border-color); 
+    width: 36px; height: 36px; min-width: 36px; border-radius: 8px; 
+    background: var(--bg-input); border: 1px solid var(--border-color); 
     display: flex; align-items: center; justify-content: center; 
     font-size: 1.1em; color: var(--text-light); 
 }
-.action-btn:hover { border-color: var(--primary); color: var(--primary); background: var(--table-hover); }
+.action-btn:hover { border-color: var(--primary); color: var(--primary); }
 
-/* FORMS */
-.controls-wrapper { display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 25px; background: var(--bg-body); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); align-items: center; }
-footer { margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border-color); }
-#addCaseForm { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; }
-#addCaseForm button { background: var(--primary); color: white; padding: 12px; border-radius: 8px; font-weight: bold; width: 100%; }
-
-/* CLIENT FORM FIX */
+/* --- FORMS --- */
+#addCaseForm, #addClientForm { display: grid; gap: 15px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: end; }
+#addCaseForm button, #addClientForm button { background: var(--primary); color: white; padding: 0 20px; border-radius: 8px; font-weight: bold; width: 100%; height: 48px; }
 .client-form-container { background: var(--bg-body); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color); }
 
-/* 🛑 MODAL & POPUP FIX (Hidden by default) 🛑 */
-/* Explicitly hide both modals by ID */
+/* --- MODALS --- */
 #editModal, #editClientModal { display: none; }
-
-.modal { 
-    display: none; /* Double safety */
-    position: fixed; 
-    z-index: 2000; /* Very high z-index to stay on top */
-    left: 0; 
-    top: 0; 
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(0,0,0,0.85); /* Darker overlay */
-    backdrop-filter: blur(5px); /* Blur effect */
-}
-.modal-content { 
-    background: var(--bg-card); 
-    margin: 10% auto; /* Better positioning */
-    padding: 25px; 
-    width: 90%; 
-    max-width: 500px; 
-    border-radius: 12px; 
-    border: 1px solid var(--border-color); 
-    position: relative; 
-    color: var(--text-main); 
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    animation: fadeIn 0.3s ease-out;
-}
+.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+.modal-content { background: var(--bg-card); margin: 5% auto; padding: 25px; width: 90%; max-width: 500px; border-radius: 12px; border: 1px solid var(--border-color); position: relative; color: var(--text-main); box-shadow: 0 20px 50px rgba(0,0,0,0.5); animation: fadeIn 0.3s ease-out; }
 .close-button { position: absolute; right: 15px; top: 15px; font-size: 28px; cursor: pointer; color: var(--text-light); }
-.close-button:hover { color: var(--danger); }
 
-/* LOGIN PAGE FIX */
+/* --- LOGIN PAGE --- */
 .auth-container { 
-    max-width: 450px !important; 
-    width: 90%; 
-    margin: 80px auto !important; 
-    padding: 40px; 
-    background: var(--bg-card); 
-    border-radius: 16px; 
-    text-align: center; 
-    border: 1px solid var(--border-color); 
-    box-shadow: var(--shadow-md); 
+    max-width: 450px !important; width: 90%; margin: 80px auto !important; padding: 40px; background: var(--bg-card); 
+    border-radius: 16px; text-align: center; border: 1px solid var(--border-color); box-shadow: var(--shadow-md); 
 }
-.auth-form input { margin-bottom: 15px; }
-.auth-form button { padding: 12px; width: 100%; background: var(--primary); color: white; font-weight: bold; border-radius: 8px; margin-top: 10px; }
-.google-btn { margin-top: 15px; width: 100%; }
+.auth-form input { margin-bottom: 15px; height: 48px; }
+.auth-form button { padding: 0; height: 48px; width: 100%; background: var(--primary); color: white; font-weight: bold; border-radius: 8px; margin-top: 10px; }
 
-/* --- FORCE MOBILE FIX --- */
+/* GOOGLE BUTTON */
+.google-btn { 
+    background-color: #ffffff !important; 
+    color: #1f1f1f !important; 
+    border: 1px solid #dadce0 !important;
+    display: flex; align-items: center; justify-content: center; width: 100%;
+    margin-top: 15px; padding: 0; height: 48px; border-radius: 8px; font-weight: 600;
+    transition: background-color 0.2s;
+}
+.google-btn:hover { background-color: #f7f8f8 !important; }
+
+/* --- 🛑 MOBILE OPTIMIZATION (Fixing the 300px Height Bug) 🛑 --- */
 @media screen and (max-width: 768px) {
-    header { flex-direction: column !important; text-align: center !important; gap: 15px !important; }
-    .header-controls { flex-direction: column !important; width: 100% !important; align-items: stretch !important; }
+    .container { padding: 15px !important; }
     
-    .header-link, #btnLogout, .print-btn, #themeToggle, #userEmail { 
-        width: 100% !important; margin: 0 0 10px 0 !important; display: flex !important; justify-content: center !important; 
+    header { flex-direction: column !important; text-align: center !important; gap: 10px !important; margin-bottom: 10px !important; padding-bottom: 10px !important; border-bottom: none !important; }
+    .header-controls { flex-direction: column !important; width: 100% !important; align-items: stretch !important; gap: 8px !important; }
+    .header-link, #btnLogout, .print-btn, #themeToggle, #userEmail { width: 100% !important; margin: 0 !important; display: flex !important; justify-content: center !important; }
+    
+    /* RESET CONTROLS WRAPPER */
+    .controls-wrapper { 
+        display: flex !important; 
+        flex-direction: column !important; 
+        align-items: stretch !important; 
+        gap: 15px !important; 
+        padding: 15px !important; 
+        margin-top: 0 !important; 
+        margin-bottom: 15px !important; 
+        height: auto !important; /* Force auto height */
+    }
+    
+    /* 🛑 THE MAGIC FIX: KILL THE 300px HEIGHT 🛑 */
+    .search-container {
+        flex: 0 0 auto !important; /* Reset flex basis */
+        width: 100% !important;
     }
 
-    /* Fixed: Removed #editCaseForm from here to prevent popup showing automatically */
-    .controls-wrapper, #addCaseForm, #addClientForm {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-        grid-template-columns: 1fr !important;
-    }
-    
-    .search-container input, .date-selector input, input, select { width: 100% !important; }
+    #addCaseForm, #addClientForm { display: flex !important; flex-direction: column !important; align-items: stretch !important; }
+    #editCaseForm, #editClientForm { display: block; }
+    .date-selector input, input, select { width: 100% !important; }
     #addCaseForm button, #addClientForm button { width: 100% !important; margin-top: 10px !important; }
-    
     .auth-container { margin: 20px auto !important; width: 95% !important; }
 }
 
-/* PRINT MODE */
 @media print {
     body, .container { background: white !important; color: black !important; padding: 0 !important; margin: 0 !important; }
     .header-controls, .controls-wrapper, footer, .global-footer, .modal, .action-cell, th:last-child, td:last-child, #themeToggle { display: none !important; }

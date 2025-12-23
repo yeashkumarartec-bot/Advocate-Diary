@@ -39,6 +39,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. FIREBASE & APP LOGIC ---
     const auth = firebase.auth(); 
     const db = firebase.firestore();
+// 👇👇 OFFLINE MODE MAGIC CODE (START) 👇👇
+    db.enablePersistence({ synchronizeTabs: true })
+        .catch((err) => {
+            if (err.code == 'failed-precondition') {
+                // यह तब होता है जब एक से ज्यादा टैब खुले हों (लेकिन synchronizeTabs: true इसे संभाल लेगा)
+                console.log("Offline persistence failed");
+            } else if (err.code == 'unimplemented') {
+                // अगर ब्राउज़र बहुत पुराना है
+                console.log("Current browser does not support offline persistence");
+            }
+        });
+    // 👆👆 OFFLINE MODE MAGIC CODE (END) 👆👆
     let userCasesCollection = null; 
     let userClientsCollection = null; 
     let currentUserId = null;
@@ -54,6 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutBtn: document.getElementById('btnLogout'), 
         clientList: document.getElementById('clientList') 
     };
+
+    // --- 🔐 APP LOCK LOGIC VARIABLES ---
+    const overlay = document.getElementById('securityOverlay');
+    const pinInput = document.getElementById('pinInput');
+    const btnUnlock = document.getElementById('btnUnlock');
+    const title = document.getElementById('securityTitle');
+    const msg = document.getElementById('securityMsg');
+    const forgotBtn = document.getElementById('forgotPin');
 
     // --- AUTHENTICATION ---
     auth.onAuthStateChanged(user => {
@@ -75,15 +95,93 @@ document.addEventListener('DOMContentLoaded', () => {
             userCasesCollection = db.collection("users").doc(currentUserId).collection("cases");
             userClientsCollection = db.collection("users").doc(currentUserId).collection("clients");
             
+            // ✅ Check App Lock FIRST
+            checkAppLock();
+            
             if(elements.tableBody) initializePage();
         } else { 
+            // Hide lock screen if not logged in
+            if(overlay) overlay.style.display = 'none';
+
             if(!document.title.includes("Login") && !document.title.includes("Updates") && !document.title.includes("Policy")) {
                  window.location.href = 'login.html'; 
             }
         }
     });
 
-    if(elements.logoutBtn) elements.logoutBtn.addEventListener('click', () => auth.signOut().then(() => window.location.href = 'login.html'));
+    // --- 🔐 APP LOCK FUNCTION (UPDATED & SECURE) ---
+    function checkAppLock() {
+        if (!overlay) return; // Only runs if lock screen exists in HTML
+        
+        // 👇 STEP 1: Check Session (क्या यूजर ने अभी-अभी PIN डाला था?)
+        if (sessionStorage.getItem('is_unlocked_now') === 'true') {
+            overlay.style.display = 'none'; // Lock मत दिखाओ
+            return; 
+        }
+
+        const savedPin = localStorage.getItem('advocateAppPin');
+        overlay.style.display = 'flex'; // Show Lock Screen
+        if(pinInput) {
+            pinInput.value = '';
+            pinInput.focus();
+        }
+
+        if (!savedPin) {
+            // MODE: Set New PIN
+            if(title) title.textContent = "Set New Security PIN";
+            if(msg) msg.textContent = "Create a 4-digit PIN to secure your diary.";
+            if(btnUnlock) {
+                btnUnlock.textContent = "Set PIN";
+                btnUnlock.onclick = () => {
+                    const val = pinInput.value;
+                    if (val.length === 4 && !isNaN(val)) {
+                        localStorage.setItem('advocateAppPin', val);
+                        sessionStorage.setItem('is_unlocked_now', 'true'); // ✅ याद कर लो कि खुल गया
+                        alert("✅ Security PIN Set Successfully!");
+                        overlay.style.display = 'none';
+                    } else {
+                        alert("Please enter a 4-digit number.");
+                    }
+                };
+            }
+        } else {
+            // MODE: Enter PIN
+            if(title) title.textContent = "Advocate Diary Locked";
+            if(msg) msg.textContent = "Enter your PIN to access data.";
+            if(btnUnlock) {
+                btnUnlock.textContent = "Unlock";
+                btnUnlock.onclick = () => {
+                    if (pinInput.value === savedPin) {
+                        sessionStorage.setItem('is_unlocked_now', 'true'); // ✅ याद कर लो कि खुल गया
+                        overlay.style.display = 'none'; // Unlock!
+                    } else {
+                        pinInput.style.borderColor = 'red';
+                        alert("❌ Incorrect PIN");
+                        pinInput.value = '';
+                    }
+                };
+            }
+        }
+
+        // Forgot PIN Logic
+        if(forgotBtn) {
+            forgotBtn.onclick = () => {
+                if(confirm("Forgot PIN? You need to Login again to reset it.")) {
+                    localStorage.removeItem('advocateAppPin'); // Clear PIN
+                    sessionStorage.removeItem('is_unlocked_now'); // Clear Session
+                    auth.signOut().then(() => window.location.href = 'login.html');
+                }
+            };
+        }
+    }
+
+    // --- 🚪 LOGOUT LOGIC (FIXED) ---
+    if(elements.logoutBtn) {
+        elements.logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('is_unlocked_now'); // 🔒 Lock it again
+            auth.signOut().then(() => window.location.href = 'login.html');
+        });
+    }
 
     // --- PAGE INITIALIZATION ---
     function initializePage() {
@@ -259,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function formatDate(d) { return d ? d.split('-').reverse().join('-') : '—'; }
 });
+
 // ==========================================
 // 🔔 PROFESSIONAL NOTIFICATION SYSTEM (V1.0)
 // ==========================================

@@ -12,6 +12,20 @@
     <script src="theme.js"></script>
 </head>
 <body>
+<div id="securityOverlay" class="security-overlay" style="display:none;">
+    <div class="security-box">
+        <div class="security-icon">🛡️</div>
+        <h2 id="securityTitle">App Locked</h2>
+        <p id="securityMsg">Enter your 4-digit PIN to access.</p>
+        
+        <div class="pin-wrapper">
+            <input type="password" id="pinInput" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••">
+        </div>
+        
+        <button id="btnUnlock" class="security-btn">Unlock</button>
+        <p id="forgotPin" class="forgot-link">Forgot PIN? (Logout)</p>
+    </div>
+</div>
     <div class="container">
         <header>
             <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>

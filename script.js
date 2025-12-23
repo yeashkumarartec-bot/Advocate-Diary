@@ -39,22 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. FIREBASE & APP LOGIC ---
     const auth = firebase.auth(); 
     const db = firebase.firestore();
-// 👇👇 OFFLINE MODE MAGIC CODE (START) 👇👇
-    db.enablePersistence({ synchronizeTabs: true })
-        .catch((err) => {
-            if (err.code == 'failed-precondition') {
-                // यह तब होता है जब एक से ज्यादा टैब खुले हों (लेकिन synchronizeTabs: true इसे संभाल लेगा)
-                console.log("Offline persistence failed");
-            } else if (err.code == 'unimplemented') {
-                // अगर ब्राउज़र बहुत पुराना है
-                console.log("Current browser does not support offline persistence");
-            }
-        });
-    // 👆👆 OFFLINE MODE MAGIC CODE (END) 👆👆
+    
+    // ⚡ OFFLINE MODE
+    db.enablePersistence({ synchronizeTabs: true }).catch(err => console.log(err));
+
     let userCasesCollection = null; 
     let userClientsCollection = null; 
     let currentUserId = null;
-    let allCasesCache = []; // Cache for Smart Search
+    let allCasesCache = []; 
 
     const elements = { 
         currentDate: document.getElementById('currentDate'), 
@@ -67,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clientList: document.getElementById('clientList') 
     };
 
-    // --- 🔐 APP LOCK LOGIC VARIABLES ---
+    // --- 🔐 APP LOCK VARIABLES ---
     const overlay = document.getElementById('securityOverlay');
     const pinInput = document.getElementById('pinInput');
     const btnUnlock = document.getElementById('btnUnlock');
@@ -79,13 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
     auth.onAuthStateChanged(user => {
         if (user) {
             currentUserId = user.uid;
-            
-            // Name Display
             let name = user.displayName || user.email.split('@')[0];
             name = name.charAt(0).toUpperCase() + name.slice(1);
             if(elements.userEmail) elements.userEmail.innerHTML = `👋 ${name}`;
 
-            // Auto-Repair User Doc
             db.collection('users').doc(user.uid).set({
                 email: user.email,
                 lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
@@ -95,39 +84,28 @@ document.addEventListener('DOMContentLoaded', () => {
             userCasesCollection = db.collection("users").doc(currentUserId).collection("cases");
             userClientsCollection = db.collection("users").doc(currentUserId).collection("clients");
             
-            // ✅ Check App Lock FIRST
             checkAppLock();
-            
             if(elements.tableBody) initializePage();
         } else { 
-            // Hide lock screen if not logged in
             if(overlay) overlay.style.display = 'none';
-
             if(!document.title.includes("Login") && !document.title.includes("Updates") && !document.title.includes("Policy")) {
                  window.location.href = 'login.html'; 
             }
         }
     });
 
-    // --- 🔐 APP LOCK FUNCTION (UPDATED & SECURE) ---
+    // --- 🔐 APP LOCK FUNCTION ---
     function checkAppLock() {
-        if (!overlay) return; // Only runs if lock screen exists in HTML
-        
-        // 👇 STEP 1: Check Session (क्या यूजर ने अभी-अभी PIN डाला था?)
+        if (!overlay) return;
         if (sessionStorage.getItem('is_unlocked_now') === 'true') {
-            overlay.style.display = 'none'; // Lock मत दिखाओ
+            overlay.style.display = 'none';
             return; 
         }
-
         const savedPin = localStorage.getItem('advocateAppPin');
-        overlay.style.display = 'flex'; // Show Lock Screen
-        if(pinInput) {
-            pinInput.value = '';
-            pinInput.focus();
-        }
+        overlay.style.display = 'flex'; 
+        if(pinInput) { pinInput.value = ''; pinInput.focus(); }
 
         if (!savedPin) {
-            // MODE: Set New PIN
             if(title) title.textContent = "Set New Security PIN";
             if(msg) msg.textContent = "Create a 4-digit PIN to secure your diary.";
             if(btnUnlock) {
@@ -136,24 +114,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     const val = pinInput.value;
                     if (val.length === 4 && !isNaN(val)) {
                         localStorage.setItem('advocateAppPin', val);
-                        sessionStorage.setItem('is_unlocked_now', 'true'); // ✅ याद कर लो कि खुल गया
+                        sessionStorage.setItem('is_unlocked_now', 'true');
                         alert("✅ Security PIN Set Successfully!");
                         overlay.style.display = 'none';
-                    } else {
-                        alert("Please enter a 4-digit number.");
-                    }
+                    } else { alert("Please enter a 4-digit number."); }
                 };
             }
         } else {
-            // MODE: Enter PIN
             if(title) title.textContent = "Advocate Diary Locked";
             if(msg) msg.textContent = "Enter your PIN to access data.";
             if(btnUnlock) {
                 btnUnlock.textContent = "Unlock";
                 btnUnlock.onclick = () => {
                     if (pinInput.value === savedPin) {
-                        sessionStorage.setItem('is_unlocked_now', 'true'); // ✅ याद कर लो कि खुल गया
-                        overlay.style.display = 'none'; // Unlock!
+                        sessionStorage.setItem('is_unlocked_now', 'true');
+                        overlay.style.display = 'none'; 
                     } else {
                         pinInput.style.borderColor = 'red';
                         alert("❌ Incorrect PIN");
@@ -162,23 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             }
         }
-
-        // Forgot PIN Logic
         if(forgotBtn) {
             forgotBtn.onclick = () => {
                 if(confirm("Forgot PIN? You need to Login again to reset it.")) {
-                    localStorage.removeItem('advocateAppPin'); // Clear PIN
-                    sessionStorage.removeItem('is_unlocked_now'); // Clear Session
+                    localStorage.removeItem('advocateAppPin');
+                    sessionStorage.removeItem('is_unlocked_now');
                     auth.signOut().then(() => window.location.href = 'login.html');
                 }
             };
         }
     }
 
-    // --- 🚪 LOGOUT LOGIC (FIXED) ---
     if(elements.logoutBtn) {
         elements.logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('is_unlocked_now'); // 🔒 Lock it again
+            sessionStorage.removeItem('is_unlocked_now');
             auth.signOut().then(() => window.location.href = 'login.html');
         });
     }
@@ -196,12 +168,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         elements.form.addEventListener('submit', addCase);
-        
-        // Color Picker Logic
         const colorInput = document.getElementById('caseColor');
         if(colorInput) colorInput.addEventListener('input', (e) => elements.form.querySelectorAll('input:not([type="color"]), select').forEach(i => { i.style.color = e.target.value; i.style.fontWeight='600'; }));
 
-        // Smart Search Debounce
         let debounce;
         elements.search.addEventListener('input', (e) => { 
             clearTimeout(debounce); 
@@ -213,7 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         elements.tableBody.addEventListener('click', handleActions);
         
-        // Modal Logic
         const modal = document.getElementById('editModal');
         if(modal) {
             document.getElementById('closeEditModal').onclick = () => modal.style.display = 'none';
@@ -238,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- DATA FUNCTIONS ---
-
     async function addCase(e) {
         e.preventDefault();
         const data = {
@@ -246,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         try { 
             await userCasesCollection.add(data); 
-            allCasesCache = []; // Clear cache
+            allCasesCache = []; 
             elements.currentDate.value = data.current_date; 
             displayCases(data.current_date); 
             elements.form.reset(); 
@@ -264,7 +231,6 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable(cases);
     }
 
-    // ✅ SMART SEARCH (Case Insensitive Fix)
     async function smartSearch(term) {
         term = term.trim().toLowerCase(); 
         if(!term) { displayCases(elements.currentDate.value); return; }
@@ -272,7 +238,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.displayDate.textContent = `Results: "${term}"`; 
         elements.tableBody.innerHTML = '<tr><td colspan="9">Searching...</td></tr>';
         
-        // Fetch ALL cases once if cache is empty
         if (allCasesCache.length === 0) {
             try { 
                 const snap = await userCasesCollection.where('isDeleted', '==', false).orderBy('current_date', 'desc').get(); 
@@ -280,20 +245,23 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (e) { console.error(e); }
         }
         
-        // Filter in Memory
         const results = allCasesCache.filter(c => (c.caseNo||'').toLowerCase().includes(term) || (c.partyName||'').toLowerCase().includes(term));
         renderTable(results);
     }
 
-    // ✅ RENDER TABLE (Icons Back Fix)
+    // ✅ RENDER TABLE WITH ANIMATION (UPDATED)
     function renderTable(dataArray) {
         if(!dataArray.length) { elements.tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px;">No cases found.</td></tr>'; return; }
         let html = '';
-        dataArray.forEach(c => {
+        
+        // 👇 ANIMATION LOGIC ADDED HERE 👇
+        dataArray.forEach((c, index) => {
             const id = c.id; 
             const safe = encodeURIComponent(JSON.stringify(c));
             
-            // Icons restored
+            // Stagger Delay (0.05s per row)
+            const delay = index * 0.05;
+
             let btns = `<div class="action-cell">
                 <button type="button" class="action-btn edit-btn" data-id="${id}" title="Edit">✏️</button>
                 <button type="button" class="action-btn calendar-btn" data-id="${id}" data-case="${safe}" title="Calendar">📅</button>
@@ -304,7 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if(c.nextDate) btns += `<span style="color:var(--success);font-weight:bold;margin-left:5px;">Done</span>`;
             
-            html += `<tr class="${c.isClosed?'case-closed':''}" style="color:${c.fontColor||'inherit'}">
+            // 👇 Added class="animate-row" and animation-delay style
+            html += `<tr class="animate-row ${c.isClosed?'case-closed':''}" style="color:${c.fontColor||'inherit'}; animation-delay: ${delay}s">
                 <td>${formatDate(c.previousDate)}</td><td>${c.caseNo}</td><td>${c.year}</td><td>${c.courtName}</td><td>${c.nature}</td><td>${c.partyName}</td><td>${c.dateFixedFor}</td><td>${formatDate(c.nextDate)}</td><td>${btns}</td></tr>`;
         });
         elements.tableBody.innerHTML = html;
@@ -332,7 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&details=${encodeURIComponent(details)}&dates=${dates}`, '_blank'); 
             } catch(err) { alert("Error"); }
         }
-        
         else if(btn.classList.contains('email-btn')) { 
             try {
                 const c = JSON.parse(decodeURIComponent(btn.dataset.case));
@@ -359,113 +327,70 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 🔔 PROFESSIONAL NOTIFICATION SYSTEM (V1.0)
+// 🔔 PROFESSIONAL NOTIFICATION SYSTEM
 // ==========================================
-
 const notifBtn = document.getElementById('btnInitNotifs');
 const notifBadge = document.getElementById('notifBadge');
 
-// 1. Ask for Permission on Click
 if(notifBtn) {
     notifBtn.addEventListener('click', () => {
         Notification.requestPermission().then(permission => {
             if (permission === "granted") {
                 showSystemNotification("Notifications Active", "You will now receive updates about your cases and app policies.", "🔔");
-                // Check for updates immediately
                 checkTodaysCases();
-            } else {
-                alert("Please allow notifications to get daily case reminders.");
-            }
+            } else { alert("Please allow notifications to get daily case reminders."); }
         });
     });
 }
 
-// 2. Auto-Check Logic (Runs when app loads)
 document.addEventListener('DOMContentLoaded', () => {
-    // Show Badge if permission not granted
     if (Notification.permission !== 'granted') {
         if(notifBadge) notifBadge.style.display = 'flex';
     } else {
         if(notifBadge) notifBadge.style.display = 'none';
-        // If allowed, check for cases automatically
-        setTimeout(checkTodaysCases, 3000); // Wait 3 seconds after load
-        setTimeout(checkSystemUpdates, 6000); // Wait 6 seconds for policy updates
+        setTimeout(checkTodaysCases, 3000); 
+        setTimeout(checkSystemUpdates, 6000);
     }
 });
 
-// 3. Check Today's Cases Logic
 async function checkTodaysCases() {
     const db = firebase.firestore();
     const auth = firebase.auth();
     const user = auth.currentUser;
-
     if (!user) return;
-
     const today = new Date().toISOString().split('T')[0];
-    const todayStr = today.split('-').reverse().join('-'); // DD-MM-YYYY
-
-    // Check if we already notified today (To avoid spam)
+    const todayStr = today.split('-').reverse().join('-');
     const lastNotified = localStorage.getItem('lastCaseNotification');
     if (lastNotified === today) return; 
 
     try {
         const snapshot = await db.collection("users").doc(user.uid).collection("cases")
             .where("current_date", "==", today)
-            .where("isDeleted", "==", false)
-            .get();
-
+            .where("isDeleted", "==", false).get();
         if (!snapshot.empty) {
             const count = snapshot.size;
-            showSystemNotification(
-                `📅 Morning Briefing: ${todayStr}`,
-                `You have ${count} cases listed for hearing today. Click to view.`,
-                "⚖️"
-            );
-            // Mark as notified
+            showSystemNotification(`📅 Morning Briefing: ${todayStr}`, `You have ${count} cases listed for hearing today. Click to view.`, "⚖️");
             localStorage.setItem('lastCaseNotification', today);
         }
-    } catch (error) {
-        console.error("Notif Error:", error);
-    }
+    } catch (error) { console.error("Notif Error:", error); }
 }
 
-// 4. Check for System/Policy Updates
 function checkSystemUpdates() {
-    // Hardcoded logic for Policy Update (Professional Touch)
-    const policyVersion = "2.0"; // Current Policy Version
+    const policyVersion = "2.0"; 
     const userSeenVersion = localStorage.getItem('policySeenVersion');
-
     if (userSeenVersion !== policyVersion) {
-        showSystemNotification(
-            "🔒 Policy Update",
-            "We have updated our Privacy Policy to ensure better security. Please review.",
-            "🛡️"
-        );
+        showSystemNotification("🔒 Policy Update", "We have updated our Privacy Policy to ensure better security. Please review.", "🛡️");
         localStorage.setItem('policySeenVersion', policyVersion);
     }
 }
 
-// 5. The Actual Notification Sender
 function showSystemNotification(title, body, iconChar) {
     if (Notification.permission === "granted") {
-        // Mobile/Desktop Native Notification
-        const options = {
-            body: body,
-            icon: 'icon-192.png', // Your new logo
-            badge: 'icon-192.png',
-            vibrate: [200, 100, 200]
-        };
-        
+        const options = { body: body, icon: 'icon-192.png', badge: 'icon-192.png', vibrate: [200, 100, 200] };
         const notif = new Notification(title, options);
-        
         notif.onclick = function(event) {
-            event.preventDefault();
-            window.focus();
-            if(title.includes("Policy")) {
-                window.location.href = 'policy.html';
-            } else {
-                window.location.href = 'index.html';
-            }
+            event.preventDefault(); window.focus();
+            if(title.includes("Policy")) { window.location.href = 'policy.html'; } else { window.location.href = 'index.html'; }
             notif.close();
         };
     }

@@ -15,24 +15,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const userDetailsContent = document.getElementById('userDetailsContent');
     const userCasesTableBody = document.getElementById('userCasesTableBody');
 
-    // 🔒 ADMIN EMAILS (सब छोटे अक्षरों में लिखें)
-    // अपनी ईमेल यहाँ चेक कर लो, अगर स्पेलिंग गलत है तो सही कर लेना!
+    // 🔒 ADMIN EMAILS (Updated List)
     const ADMIN_EMAILS = [
-        "contact.advocatediary@gmail.com"
+        "contact.advocatediary@gmail.com",
+        "yeashkumar.artec@gmail.com", 
+        "shivkanth234@gmail.com"
     ]; 
 
-    // --- 1. AUTH CHECK (SMART FIX) ---
+    // --- 1. AUTH CHECK ---
     auth.onAuthStateChanged(user => {
         if (user) {
-            // ईमेल को छोटा (lowercase) करके चेक करेंगे
             const currentEmail = user.email.toLowerCase();
 
             if (ADMIN_EMAILS.includes(currentEmail)) {
                 adminEmailDisplay.textContent = `Admin: ${user.email}`;
                 loadAllUsers();
             } else {
-                // अगर अब भी फेल हुआ, तो अलर्ट में दिखेगा कि आप किस ईमेल से आए हो
-                alert(`Access Denied!\n\nYou are logged in as: ${user.email}\n\nThis email is not in the Admin List.`);
+                alert(`Access Denied!\n\nYou are logged in as: ${user.email}\n\nThis email is not authorized.`);
                 window.location.href = 'index.html';
             }
         } else {
@@ -40,26 +39,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- 2. LOAD USERS ---
+    // --- 2. LOAD USERS (FIXED: Removing orderBy to show old data) ---
     async function loadAllUsers() {
-        usersTableBody.innerHTML = '<tr><td colspan="4">Loading...</td></tr>';
+        usersTableBody.innerHTML = '<tr><td colspan="4">Loading users from database...</td></tr>';
         try {
-            const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
+            // 👇 यहाँ से .orderBy('createdAt', 'desc') हटा दिया है
+            // अब यह सारे यूजर्स दिखाएगा, चाहे उनके पास timestamp हो या न हो।
+            const snapshot = await db.collection('users').get();
             
             if (snapshot.empty) {
-                usersTableBody.innerHTML = '<tr><td colspan="4">No registered users found.</td></tr>';
+                usersTableBody.innerHTML = '<tr><td colspan="4">No registered users found in "users" collection.</td></tr>';
                 return;
             }
 
             let html = '';
             snapshot.forEach(doc => {
                 const data = doc.data();
-                const created = data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString() : 'N/A';
+                
+                // Date formatting with safety check
+                let created = 'Old User (No Date)';
+                if (data.createdAt && data.createdAt.toDate) {
+                    created = new Date(data.createdAt.toDate()).toLocaleDateString();
+                }
+
                 const status = data.isVerified ? '<span style="color:var(--success);">Verified</span>' : '<span style="color:var(--warning);">Pending</span>';
                 
                 html += `
                     <tr>
-                        <td style="font-weight:600;">${data.email}</td>
+                        <td style="font-weight:600;">${data.email || 'No Email'}</td>
                         <td>${created}</td>
                         <td>${status}</td>
                         <td>
@@ -76,15 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 3. VIEW USER DETAILS (MODAL) ---
+    // --- 3. VIEW USER DETAILS ---
     window.viewUser = async function(userId, email) {
         userModal.style.display = 'block';
         userDetailsContent.innerHTML = `<p><strong>Email:</strong> ${email}</p><p>Loading cases...</p>`;
         userCasesTableBody.innerHTML = '';
 
         try {
+            // Cases fetch doing well
             const casesSnap = await db.collection('users').doc(userId).collection('cases')
-                                      .orderBy('current_date', 'desc').limit(20).get();
+                                      .limit(20).get();
 
             let casesHtml = '';
             if (casesSnap.empty) {
@@ -111,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 4. SEARCH LOGIC ---
+    // --- 4. SEARCH ---
     if(adminSearch) {
         adminSearch.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
@@ -126,12 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 5. MODAL CLOSE LOGIC ---
+    // --- 5. MODAL CLOSE ---
     closeUserModal.onclick = () => userModal.style.display = 'none';
     closeModalBtn.onclick = () => userModal.style.display = 'none';
-    window.onclick = (e) => {
-        if (e.target == userModal) userModal.style.display = 'none';
-    }
+    window.onclick = (e) => { if (e.target == userModal) userModal.style.display = 'none'; }
 
     // Logout
     btnLogout.addEventListener('click', () => {

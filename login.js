@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. HANDLE SUBMIT (SECURE LOGIC) ---
+    // --- 2. HANDLE SUBMIT ---
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -57,19 +57,28 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = true;
 
             if (isLoginMode) {
-                // --- LOGIN LOGIC (With Verification Check) ---
+                // --- LOGIN LOGIC (With Auto-Save Fix) ---
                 auth.signInWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
                         
-                        // 🔒 SECURITY CHECK: Is Email Verified?
+                        // 🔒 Check Verification
                         if (user.emailVerified) {
-                            // Success
-                            window.location.href = 'index.html';
+                            
+                            // ✅ FIX: Ensure User exists in DB (Self-Healing)
+                            // पुराने यूजर्स को लॉगिन पर रजिस्टर में चढ़ा देगा
+                            db.collection('users').doc(user.uid).set({
+                                email: user.email,
+                                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                                isVerified: true
+                            }, { merge: true }) // merge: true मतलब पुराना डेटा नहीं उड़ेगा
+                            .then(() => {
+                                window.location.href = 'index.html';
+                            });
+
                         } else {
-                            // Failed: Email not verified
-                            auth.signOut(); // Logout immediately
-                            alert("Access Denied: Your email is not verified yet.\n\nPlease check your inbox (and spam folder) for the verification link.");
+                            auth.signOut();
+                            alert("Access Denied: Your email is not verified yet.\n\nPlease check your inbox.");
                             submitBtn.textContent = originalText;
                             submitBtn.disabled = false;
                         }
@@ -82,25 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
             } else {
-                // --- REGISTER LOGIC (Send Verification Email) ---
+                // --- REGISTER LOGIC ---
                 auth.createUserWithEmailAndPassword(email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
-                        
-                        // 1. Send Verification Link
                         user.sendEmailVerification().then(() => {
-                            // 2. Create Database Entry
                             return db.collection('users').doc(user.uid).set({
                                 email: email,
                                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                                 isVerified: false
                             });
                         }).then(() => {
-                            // 3. Force Logout & Show Alert
                             auth.signOut();
-                            alert(`✅ Account Created Successfully!\n\n🔒 SECURITY STEP: We have sent a verification link to ${email}.\n\nPlease verify your email before logging in.`);
-                            
-                            // 4. Switch back to Login Mode
+                            alert(`✅ Account Created!\n\nVerfication link sent to ${email}. Check inbox.`);
                             location.reload(); 
                         });
                     })
@@ -119,26 +122,22 @@ document.addEventListener('DOMContentLoaded', () => {
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
             const email = emailInput.value;
-            if (!email) {
-                alert("Please enter your email address to reset password.");
-                emailInput.focus();
-                return;
-            }
-            if(confirm(`Send password reset link to ${email}?`)) {
+            if (!email) { alert("Enter email first."); return; }
+            if(confirm(`Send reset link to ${email}?`)) {
                 auth.sendPasswordResetEmail(email)
-                    .then(() => alert("Reset link sent! Check your email."))
-                    .catch((error) => alert("Error: " + error.message));
+                    .then(() => alert("Reset link sent!"))
+                    .catch((error) => alert(error.message));
             }
         });
     }
 
-    // --- 4. GOOGLE LOGIN (Always Secure) ---
+    // --- 4. GOOGLE LOGIN ---
     if (googleLoginBtn) {
         googleLoginBtn.addEventListener('click', () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    // Google users are automatically verified
+                    // Save User on Google Login too
                     db.collection('users').doc(result.user.uid).set({
                         email: result.user.email,
                         name: result.user.displayName,
@@ -147,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }, { merge: true });
                     window.location.href = 'index.html';
                 })
-                .catch((error) => alert("Google Sign-In Failed: " + error.message));
+                .catch((error) => alert("Google Login Failed: " + error.message));
         });
     }
 });

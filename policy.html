@@ -7,65 +7,90 @@
     <link rel="stylesheet" href="style.css?v=42.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
-    <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/512/scales-emoji.png">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
     <script src="theme.js"></script>
+    <style>
+        /* Professional Document Styling */
+        .policy-content {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            line-height: 1.8;
+            color: var(--text-main);
+        }
+        .policy-content h2 { color: var(--primary); margin-top: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 1.4em; }
+        .policy-content h3 { color: var(--text-main); margin-top: 20px; font-size: 1.1em; }
+        .policy-content p, .policy-content li { color: var(--text-light); font-size: 0.95em; margin-bottom: 15px; }
+        .policy-content ul { padding-left: 20px; }
+        .last-updated { text-align: center; color: var(--text-muted); font-size: 0.9em; margin-bottom: 30px; font-style: italic; }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><span class="logo-icon">⚖️</span> Advocate Dairy</h1>
+            <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
             <div class="header-controls">
-                <a href="login.html" class="header-link">Back to Login</a>
+                <a href="index.html" class="header-link">Back to Diary</a>
             </div>
         </header>
 
-        <main style="max-width: 800px; margin: 0 auto;">
-            <h2 style="text-align:center; color:var(--primary); border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Privacy Policy</h2>
-            
-            <div style="line-height: 1.8;">
-                <p><strong>Last updated:</strong> December 12, 2025</p>
-                <p>This Privacy Policy describes how <strong>Advocate Dairy</strong> collects, uses, and protects your information when you use our web application (the "Service").</p>
+        <main>
+            <h1 style="text-align:center; margin-bottom: 5px;">Privacy Policy</h1>
+            <p class="last-updated">Last Updated: December 18, 2025</p>
 
-                <h3 style="color:var(--text-main); margin-top: 20px;">1. Information We Collect</h3>
-                <p>We collect information you provide directly to us:</p>
+            <div class="policy-content">
+                <p>Welcome to <strong>Advocate Diary</strong>. We value your trust and are committed to protecting your personal information and case data. This Privacy Policy outlines how we collect, use, and safeguard your data in accordance with global standards.</p>
+
+                <h2>1. Information We Collect</h2>
+                <p>We collect information to provide better services to all our users. The types of information we collect include:</p>
                 <ul>
-                    <li><strong>Account Information:</strong> Email address, password, and mobile number (via Google Login or Email Sign-up) solely for authentication purposes.</li>
-                    <li><strong>Case Data:</strong> Case numbers, party names, court names, dates, and notes you enter into the diary.</li>
-                    <li><strong>Client Data:</strong> Client names and contact details stored in the "My Clients" section.</li>
+                    <li><strong>Account Information:</strong> When you register, we collect your email address and name for authentication purposes via Google Firebase.</li>
+                    <li><strong>Case Data:</strong> The case numbers, party names, court details, and dates you enter are stored securely to provide the core functionality of the app.</li>
+                    <li><strong>Usage Data:</strong> We may collect analytical data on how the app is accessed and used (e.g., dark mode preferences) to improve user experience.</li>
                 </ul>
 
-                <h3 style="color:var(--text-main); margin-top: 20px;">2. How We Use Your Information</h3>
+                <h2>2. How We Use Information</h2>
+                <p>We use the information we collect for the following purposes:</p>
                 <ul>
-                    <li>To provide, maintain, and improve the Service.</li>
-                    <li>To authenticate your identity and prevent unauthorized access.</li>
-                    <li>To allow you to print, search, and manage your legal schedule efficiently.</li>
-                    <li>To save your preferences, such as Dark Mode settings.</li>
+                    <li><strong>Service Provision:</strong> To maintain your digital diary, forward case dates automatically, and manage client details.</li>
+                    <li><strong>Security:</strong> To verify your identity and prevent unauthorized access to your account.</li>
+                    <li><strong>Communication:</strong> To send important account updates, such as password reset emails or security alerts.</li>
                 </ul>
 
-                <h3 style="color:var(--text-main); margin-top: 20px;">3. Data Security</h3>
-                <p>Your data is stored securely on <strong>Google Firebase</strong> (Cloud Firestore). We implement strict security rules to ensure that:</p>
+                <h2>3. Data Storage & Security</h2>
+                <p>Your data is our top priority. We utilize <strong>Google Firebase</strong> (a Google Cloud service) to store and encrypt your data. This ensures enterprise-grade security, including:</p>
                 <ul>
-                    <li><strong>Data Isolation:</strong> Only you can access or edit your personal case diary. No other user can see your data.</li>
-                    <li><strong>Encryption:</strong> Data is transmitted over a secure SSL connection (HTTPS).</li>
+                    <li><strong>Encryption:</strong> Data is encrypted in transit (HTTPS) and at rest.</li>
+                    <li><strong>Access Control:</strong> Strict authentication protocols ensure only you can access your private case data.</li>
+                    <li><strong>Reliability:</strong> 99.9% uptime guaranteed by Google Cloud infrastructure.</li>
                 </ul>
 
-                <h3 style="color:var(--text-main); margin-top: 20px;">4. Data Retention & Deletion</h3>
-                <p><strong>Retention:</strong> Your data remains stored as long as you have an active account.</p>
-                <p><strong>Deletion:</strong> You can delete any case or client at any time. Deleted items move to the "Recycle Bin" where they can be permanently removed by you. If you wish to delete your entire account, please contact us.</p>
+                <h2>4. Data Sharing & Disclosure</h2>
+                <p><strong>We do not sell your personal data.</strong> We respect your confidentiality. We do not share your case details with third parties, advertisers, or other organizations, except as required by law.</p>
 
-                <h3 style="color:var(--text-main); margin-top: 20px;">5. Contact Us</h3>
-                <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:contact.advocatediary@gmail.com" style="color:var(--primary);">contact.advocatediary@gmail.com</a></p>
+                <h2>5. Your Rights & Choices</h2>
+                <p>You have full control over your data:</p>
+                <ul>
+                    <li><strong>Access & Edit:</strong> You can view and edit your case files at any time.</li>
+                    <li><strong>Delete:</strong> You can move cases to the Recycle Bin or permanently delete them.</li>
+                    <li><strong>Export:</strong> You can use the "Print List" feature to export your daily cause list.</li>
+                </ul>
+
+                <h2>6. Changes to This Policy</h2>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this page periodically for any changes.</p>
+
+                <h2>7. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                <p><strong>Email:</strong> <a href="mailto:contact.advocatediary@gmail.com" style="color:var(--primary);">contact.advocatediary@gmail.com</a></p>
             </div>
         </main>
     </div>
 
     <div class="global-footer">
-        <p>Created by Yeash Pandey</p>
-        <p>
-            <a href="updates.html">App Updates</a> | 
-            <a href="login.html">Login</a> | 
-            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
-        </p>
+        <p>Created with ❤️ by Yeash Pandey</p>
+        <p><a href="login.html">Login</a> | <a href="updates.html">App Updates</a></p>
     </div>
 </body>
 </html>

@@ -252,3 +252,68 @@ tbody tr:hover { background-color: var(--table-hover); cursor: pointer; }
 .global-footer { text-align: center; margin-top: 40px; color: var(--text-light); border-top: 1px solid var(--border-color); padding-top: 20px; }
 .global-footer a { color: var(--text-light); }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* =========================================
+   🔔 NOTIFICATION BUTTON STYLES (FINAL V2)
+   ========================================= */
+
+.notification-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* टेक्स्ट और घंटी के बीच गैप */
+    cursor: pointer;
+    
+    /* बटन जैसा लुक (Desktop & Mobile Common) */
+    background: var(--bg-input); 
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 20px; /* बाकी बटनों जैसी पैडिंग */
+    font-size: 1rem; /* टेक्स्ट का साइज */
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.notification-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+}
+
+/* Red Badge Style (लाल बिंदी) */
+#notifBadge {
+    display: none; /* JS इसे दिखाएगा */
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid var(--bg-card);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* MOBILE FIX (Height & Width Match) */
+@media screen and (max-width: 768px) {
+    .notification-btn {
+        width: 100% !important; /* पूरी चौड़ाई */
+        margin: 0 0 10px 0 !important; /* नीचे गैप */
+        font-size: 1.1rem !important; /* मोबाइल पर थोड़ा बड़ा टेक्स्ट */
+        padding: 12px 0 !important; /* हाइट बढ़ाने के लिए पैडिंग */
+    }
+
+    /* मोबाइल पर बैज की पोजीशन */
+    #notifBadge {
+        top: 5px;
+        right: 15px;
+        border-color: var(--bg-input);
+    }
+}

@@ -59,14 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clientList: document.getElementById('clientList') 
     };
 
-    // --- 🔐 APP LOCK VARIABLES ---
-    const overlay = document.getElementById('securityOverlay');
-    const pinInput = document.getElementById('pinInput');
-    const btnUnlock = document.getElementById('btnUnlock');
-    const title = document.getElementById('securityTitle');
-    const msg = document.getElementById('securityMsg');
-    const forgotBtn = document.getElementById('forgotPin');
-
     // --- AUTHENTICATION ---
     auth.onAuthStateChanged(user => {
         if (user) {
@@ -74,6 +66,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let name = user.displayName || user.email.split('@')[0];
             name = name.charAt(0).toUpperCase() + name.slice(1);
             if(elements.userEmail) elements.userEmail.innerHTML = `👋 ${name}`;
+
+            // 👑 ADMIN CHECK (Corrected Email)
+            if (user.email === "contact.advocatediary@gmail.com") {
+                const adminBtn = document.getElementById('adminPanelLink');
+                if (adminBtn) adminBtn.style.display = 'inline-block';
+            }
 
             db.collection('users').doc(user.uid).set({
                 email: user.email,
@@ -84,73 +82,21 @@ document.addEventListener('DOMContentLoaded', () => {
             userCasesCollection = db.collection("users").doc(currentUserId).collection("cases");
             userClientsCollection = db.collection("users").doc(currentUserId).collection("clients");
             
-            checkAppLock();
+            // 🔓 NO LOCK CHECK HERE ANYMORE
+            
             if(elements.tableBody) initializePage();
         } else { 
-            if(overlay) overlay.style.display = 'none';
             if(!document.title.includes("Login") && !document.title.includes("Updates") && !document.title.includes("Policy")) {
                  window.location.href = 'login.html'; 
             }
         }
     });
 
-    // --- 🔐 APP LOCK FUNCTION ---
-    function checkAppLock() {
-        if (!overlay) return;
-        if (sessionStorage.getItem('is_unlocked_now') === 'true') {
-            overlay.style.display = 'none';
-            return; 
-        }
-        const savedPin = localStorage.getItem('advocateAppPin');
-        overlay.style.display = 'flex'; 
-        if(pinInput) { pinInput.value = ''; pinInput.focus(); }
-
-        if (!savedPin) {
-            if(title) title.textContent = "Set New Security PIN";
-            if(msg) msg.textContent = "Create a 4-digit PIN to secure your diary.";
-            if(btnUnlock) {
-                btnUnlock.textContent = "Set PIN";
-                btnUnlock.onclick = () => {
-                    const val = pinInput.value;
-                    if (val.length === 4 && !isNaN(val)) {
-                        localStorage.setItem('advocateAppPin', val);
-                        sessionStorage.setItem('is_unlocked_now', 'true');
-                        alert("✅ Security PIN Set Successfully!");
-                        overlay.style.display = 'none';
-                    } else { alert("Please enter a 4-digit number."); }
-                };
-            }
-        } else {
-            if(title) title.textContent = "Advocate Diary Locked";
-            if(msg) msg.textContent = "Enter your PIN to access data.";
-            if(btnUnlock) {
-                btnUnlock.textContent = "Unlock";
-                btnUnlock.onclick = () => {
-                    if (pinInput.value === savedPin) {
-                        sessionStorage.setItem('is_unlocked_now', 'true');
-                        overlay.style.display = 'none'; 
-                    } else {
-                        pinInput.style.borderColor = 'red';
-                        alert("❌ Incorrect PIN");
-                        pinInput.value = '';
-                    }
-                };
-            }
-        }
-        if(forgotBtn) {
-            forgotBtn.onclick = () => {
-                if(confirm("Forgot PIN? You need to Login again to reset it.")) {
-                    localStorage.removeItem('advocateAppPin');
-                    sessionStorage.removeItem('is_unlocked_now');
-                    auth.signOut().then(() => window.location.href = 'login.html');
-                }
-            };
-        }
-    }
+    // 🔓 LOCK FUNCTION DELETED
 
     if(elements.logoutBtn) {
         elements.logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('is_unlocked_now');
+            // Lock session logic removed
             auth.signOut().then(() => window.location.href = 'login.html');
         });
     }
@@ -249,17 +195,16 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable(results);
     }
 
-    // ✅ RENDER TABLE WITH ANIMATION (UPDATED)
+    // ✅ RENDER TABLE WITH ANIMATION
     function renderTable(dataArray) {
         if(!dataArray.length) { elements.tableBody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:20px;">No cases found.</td></tr>'; return; }
         let html = '';
         
-        // 👇 ANIMATION LOGIC ADDED HERE 👇
         dataArray.forEach((c, index) => {
             const id = c.id; 
             const safe = encodeURIComponent(JSON.stringify(c));
             
-            // Stagger Delay (0.05s per row)
+            // Stagger Delay
             const delay = index * 0.05;
 
             let btns = `<div class="action-cell">
@@ -272,7 +217,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if(c.nextDate) btns += `<span style="color:var(--success);font-weight:bold;margin-left:5px;">Done</span>`;
             
-            // 👇 Added class="animate-row" and animation-delay style
             html += `<tr class="animate-row ${c.isClosed?'case-closed':''}" style="color:${c.fontColor||'inherit'}; animation-delay: ${delay}s">
                 <td>${formatDate(c.previousDate)}</td><td>${c.caseNo}</td><td>${c.year}</td><td>${c.courtName}</td><td>${c.nature}</td><td>${c.partyName}</td><td>${c.dateFixedFor}</td><td>${formatDate(c.nextDate)}</td><td>${btns}</td></tr>`;
         });
@@ -327,19 +271,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ==========================================
-// 🔔 PROFESSIONAL NOTIFICATION SYSTEM
+// 🔔 MOBILE-FRIENDLY NOTIFICATION SYSTEM
 // ==========================================
 const notifBtn = document.getElementById('btnInitNotifs');
 const notifBadge = document.getElementById('notifBadge');
 
 if(notifBtn) {
-    notifBtn.addEventListener('click', () => {
-        Notification.requestPermission().then(permission => {
-            if (permission === "granted") {
-                showSystemNotification("Notifications Active", "You will now receive updates about your cases and app policies.", "🔔");
-                checkTodaysCases();
-            } else { alert("Please allow notifications to get daily case reminders."); }
-        });
+    notifBtn.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        
+        // 📢 MOBILE FEEDBACK
+        alert("🔔 Checking Notification Settings..."); 
+
+        if (!("Notification" in window)) {
+            alert("❌ This browser does not support notifications.");
+        } else if (Notification.permission === "granted") {
+            alert("✅ Notifications are already ON!");
+            checkTodaysCases();
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    showSystemNotification("Success!", "You will now receive case updates.", "🔔");
+                    checkTodaysCases();
+                } else {
+                    alert("❌ Permission Denied. Check Phone Settings.");
+                }
+            });
+        }
     });
 }
 

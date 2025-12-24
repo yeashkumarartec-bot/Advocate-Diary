@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advocate Diary</title>
-    <link rel="stylesheet" href="style.css?v=42.0">
+    <link rel="stylesheet" href="style.css?v=43.0">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d6efd">
     <link rel="icon" type="image/png" href="icon-192.png">
@@ -12,33 +12,25 @@
     <script src="theme.js"></script>
 </head>
 <body>
-<div id="securityOverlay" class="security-overlay" style="display:none;">
-    <div class="security-box">
-        <div class="security-icon">🛡️</div>
-        <h2 id="securityTitle">App Locked</h2>
-        <p id="securityMsg">Enter your 4-digit PIN to access.</p>
-        
-        <div class="pin-wrapper">
-            <input type="password" id="pinInput" maxlength="4" pattern="[0-9]*" inputmode="numeric" placeholder="••••">
-        </div>
-        
-        <button id="btnUnlock" class="security-btn">Unlock</button>
-        <p id="forgotPin" class="forgot-link">Forgot PIN? (Logout)</p>
-    </div>
-</div>
+
     <div class="container">
         <header>
             <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
             <div class="header-controls">
                 <span id="userEmail">Loading...</span>
+                
+                <a href="admin.html" id="adminPanelLink" class="header-link" style="display: none; background-color: #dc3545; color: white;">👑 Admin</a>
+
                 <a href="clients.html" class="header-link">My Clients</a>
                 <a href="dashboard.html" class="header-link">Dashboard</a>
                 <a href="recyclebin.html" class="header-link danger-link">♻️ Recycle Bin</a>
                 <button id="btnPrint" class="print-btn">🖨️ Print List</button>
-               <button id="btnInitNotifs" class="header-link notification-btn">
-    Notifications 🔔
-    <span id="notifBadge">1</span>
-</button>
+                
+                <button id="btnInitNotifs" class="header-link notification-btn">
+                    Notifications 🔔
+                    <span id="notifBadge">1</span>
+                </button>
+                
                 <button id="btnLogout">Logout</button>
             </div>
         </header>
@@ -114,7 +106,7 @@
                     <input type="color" id="editCaseColor" style="width:50px;padding:2px;height:40px;">
                 </div>
                 <input type="text" id="editCaseNo" placeholder="Case No" required>
-                <input type="text" id="editYear" placeholder="Year" required>ss
+                <input type="text" id="editYear" placeholder="Year" required>
                 <input type="text" id="editCourtName" placeholder="Court" required>
                 <input type="text" id="editNature" placeholder="Nature">
                 <input type="text" id="editPartyName" placeholder="Party Name" required>

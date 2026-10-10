@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Allow: /login.html
+Disallow: /dashboard.html
+Disallow: /clients.html
+Sitemap: https://advocate-diary-co.web.app/sitemap.xml

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=40.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#090d16">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="theme.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- SEO & Social Meta Tags -->
+    <meta name="description" content="Advocate Diary is a modern case management tool for legal professionals. Manage clients, hearing dates, and case history easily.">
+    <meta name="keywords" content="Advocate Diary, Lawyer App, Case Management System, Legal Diary, High Court Case Status, E-Diary for Advocates">
+    <meta name="author" content="Yeash Pandey">
+
+    <meta property="og:title" content="Advocate Diary - Smart Legal Assistant">
+    <meta property="og:description" content="Manage your court cases and clients efficiently. Try for free!">
+    <meta property="og:image" content="https://advocate-diary-co.web.app/icon-512.png">
+    <meta property="og:url" content="https://advocate-diary-co.web.app/">
+    <meta property="og:type" content="website">
+
+    <style>
+        /* --- LIQUID GLASS SCOPED STYLING --- */
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #080b12;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Liquid Mesh Glows */
+        .liquid-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.55;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, #4f46e5 0%, #3b82f6 100%);
+            top: -80px;
+            left: -80px;
+        }
+        .orb-2 {
+            width: 360px;
+            height: 360px;
+            background: radial-gradient(circle, #8b5cf6 0%, #ec4899 100%);
+            bottom: -60px;
+            right: -60px;
+            animation-duration: 15s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 40px) scale(1.08); }
+            100% { transform: translate(-20px, 20px) scale(0.95); }
+        }
+
+        /* Liquid Frosted Glass Auth Card */
+        .auth-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 420px;
+            margin: 20px auto !important;
+            padding: 36px 28px !important;
+            background: rgba(18, 24, 38, 0.65) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.22) !important;
+            border-radius: 24px !important;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+            text-align: center;
+            box-sizing: border-box;
+            animation: cardAppear 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(20px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* App Branding Header */
+        .brand-header {
+            margin-bottom: 24px;
+        }
+        .brand-title {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .brand-title .logo-icon {
+            font-size: 1.25em;
+            display: inline-block;
+            filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.4));
+        }
+        #formTitle {
+            margin: 6px 0 0 0;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #94a3b8;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: 0.01em;
+        }
+
+        /* Input Controls */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .auth-form input {
+            width: 100% !important;
+            height: 50px !important;
+            padding: 0 18px !important;
+            background: rgba(10, 14, 24, 0.65) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 12px !important;
+            color: #ffffff !important;
+            font-size: 0.95rem !important;
+            outline: none !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-sizing: border-box !important;
+        }
+        .auth-form input::placeholder {
+            color: #64748b;
+        }
+        .auth-form input:focus {
+            border-color: #6366f1 !important;
+            background: rgba(14, 20, 34, 0.85) !important;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25) !important;
+        }
+
+        /* Liquid Gradient Action Button */
+        #submitBtn {
+            width: 100% !important;
+            height: 50px !important;
+            margin-top: 6px !important;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%) !important;
+            color: #ffffff !important;
+            border: none !important;
+            border-radius: 12px !important;
+            font-family: 'Outfit', sans-serif !important;
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.01em !important;
+            cursor: pointer !important;
+            box-shadow: 0 8px 24px -4px rgba(79, 70, 229, 0.5) !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        #submitBtn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -4px rgba(79, 70, 229, 0.65) !important;
+            filter: brightness(1.06);
+        }
+        #submitBtn:active {
+            transform: scale(0.98);
+        }
+
+        /* Divider */
+        .auth-divider {
+            position: relative;
+            margin: 20px 0 16px 0;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .auth-divider span {
+            padding: 0 12px;
+        }
+
+        /* Google Button Apple Glass Style */
+        .google-btn {
+            width: 100% !important;
+            height: 50px !important;
+            margin-top: 0 !important;
+            background: rgba(255, 255, 255, 0.95) !important;
+            color: #0f172a !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important;
+            border-radius: 12px !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
+            font-weight: 600 !important;
+            font-size: 0.94rem !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        }
+        .google-btn:hover {
+            background: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15) !important;
+        }
+        .google-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Auth Nav Links */
+        .auth-links {
+            margin-top: 22px;
+            font-size: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .auth-links a {
+            color: #818cf8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .auth-links a:hover {
+            color: #a5b4fc;
+            text-decoration: underline;
+        }
+
+        /* Clean Glass Footer */
+        .global-footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-top: 28px;
+            color: #64748b;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .global-footer p {
+            margin: 4px 0;
+        }
+        .global-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .global-footer a:hover {
+            color: #c7d2fe;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 30px 20px !important;
+                border-radius: 20px !important;
+            }
+            .brand-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Liquid Ambient Glow Elements -->
+    <div class="liquid-orb orb-1"></div>
+    <div class="liquid-orb orb-2"></div>
+
+    <div class="auth-container">
+        <div class="brand-header">
+            <h1 class="brand-title"><span class="logo-icon">⚖️</span> Advocate Diary</h1>
+            <h2 id="formTitle">Login</h2>
+        </div>
+
+        <form id="loginForm" class="auth-form">
+            <input type="email" id="email" placeholder="Email Address" required autocomplete="email">
+            <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+            <button type="submit" id="submitBtn">Login</button>
+        </form>
+
+        <div class="auth-divider">
+            <span>OR</span>
+        </div>
+
+        <button id="googleLoginBtn" class="google-btn">
+             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="18" height="18" alt="G" style="margin-right:10px;"> 
+             Sign in with Google
+        </button>
+        
+        <div class="auth-links">
+            <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+            <span id="toggleText" style="color: #94a3b8;">
+                No account? <a href="#" id="toggleAuthMode" style="font-weight: 600;">Create one</a>
+            </span>
+        </div>
+    </div>
+
+    <div class="global-footer">
+        <p>Created with ❤️ by Yeash Pandey & Alfi khan</p>
+        <p>
+            <a href="updates.html">App Updates</a> &bull; 
+            <a href="policy.html">Privacy Policy</a> &bull; 
+            <a href="about.html">About Developers</a> &bull; 
+            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
+        </p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", 
+            authDomain: "advocate-diary-co.firebaseapp.com", 
+            projectId: "advocate-diary-co", 
+            storageBucket: "advocate-diary-co.appspot.com", 
+            messagingSenderId: "809588634104", 
+            appId: "1:809588634104:web:f5d4838294ad602aeb660d", 
+            measurementId: "G-53VM0EZCWC" 
+        }; 
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    
+    <script src="login.js"></script>
+</body>
+</html>

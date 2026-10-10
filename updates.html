@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Release Notes - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=52.0">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#080b12">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="theme.js?v=52.0"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- LIQUID GLASS UPDATES THEME --- */
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            background: #080b12;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Ambient Liquid Glow Orbs */
+        .liquid-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            animation: floatOrb 14s ease-in-out infinite alternate;
+        }
+        .orb-up-1 {
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, #6366f1 0%, #3b82f6 100%);
+            top: -120px;
+            left: -100px;
+        }
+        .orb-up-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #10b981 0%, #06b6d4 100%);
+            bottom: -80px;
+            right: -60px;
+            animation-duration: 18s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, 30px) scale(1.06); }
+            100% { transform: translate(-30px, 20px) scale(0.95); }
+        }
+
+        /* Main Glass Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 950px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(18, 24, 38, 0.65) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 24px !important;
+            padding: 32px 28px !important;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7) !important;
+            box-sizing: border-box;
+            animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            font-size: 1.2em;
+            filter: drop-shadow(0 4px 10px rgba(99, 102, 241, 0.4));
+        }
+
+        .header-link {
+            text-decoration: none;
+            padding: 9px 18px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f1f5f9;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .header-link:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .intro-text {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 34px;
+            font-size: 0.96rem;
+            line-height: 1.6;
+        }
+
+        /* Glass Release Cards */
+        .update-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .update-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 20px;
+            padding: 26px 28px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+            transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .update-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 35px -6px rgba(0, 0, 0, 0.5);
+        }
+
+        .border-purple {
+            border-left: 4px solid #8b5cf6 !important;
+        }
+        .border-green {
+            border-left: 4px solid #10b981 !important;
+        }
+        .border-blue {
+            border-left: 4px solid #6366f1 !important;
+        }
+        .border-gray {
+            border-left: 4px solid #64748b !important;
+        }
+
+        .version-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .version-header h2, .version-header h3 {
+            margin: 8px 0 0 0;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+        .version-header h2 { font-size: 1.35rem; }
+        .version-header h3 { font-size: 1.2rem; }
+
+        .version-date {
+            color: #818cf8;
+            font-size: 0.88rem;
+            font-weight: 600;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            padding: 4px 12px;
+            border-radius: 50px;
+            white-space: nowrap;
+        }
+
+        /* Apple-Style Glass Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-family: 'Outfit', sans-serif;
+        }
+        .badge-new {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c084fc;
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            box-shadow: 0 2px 10px rgba(139, 92, 246, 0.25);
+        }
+
+        .update-card p {
+            color: #cbd5e1;
+            font-size: 0.94rem;
+            line-height: 1.65;
+            margin: 8px 0 16px 0;
+        }
+
+        .feature-title {
+            color: #818cf8;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 16px 0 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .update-card ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #94a3b8;
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+        .update-card ul li {
+            margin-bottom: 6px;
+        }
+        .update-card ul li strong {
+            color: #f1f5f9;
+        }
+
+        /* Glass Accordion for Legacy Updates */
+        details {
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.25s ease;
+        }
+        summary {
+            padding: 18px 22px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            color: #cbd5e1;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s ease;
+            user-select: none;
+        }
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::after {
+            content: '▾';
+            font-size: 1.1rem;
+            color: #818cf8;
+            transition: transform 0.25s ease;
+        }
+        details[open] summary::after {
+            transform: rotate(180deg);
+        }
+        summary:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .legacy-content {
+            padding: 22px;
+            background: rgba(10, 14, 24, 0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .legacy-content h4 {
+            margin: 0 0 8px 0;
+            font-family: 'Outfit', sans-serif;
+            color: #ffffff;
+            font-size: 1.1rem;
+        }
+        .legacy-content p {
+            color: #94a3b8;
+            margin: 0 0 12px 0;
+            font-size: 0.92rem;
+        }
+        .legacy-content ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .global-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 36px;
+            color: #64748b;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .global-footer p {
+            margin: 4px 0;
+        }
+        .global-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .global-footer a:hover {
+            color: #818cf8;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 14px 10px; }
+            .container { padding: 20px 14px !important; border-radius: 18px !important; }
+            header { flex-direction: column; align-items: stretch; text-align: center; gap: 14px; }
+            header h1 { justify-content: center; }
+            .header-link { width: 100%; justify-content: center; box-sizing: border-box; }
+            .update-card { padding: 20px 18px; }
+            .version-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Liquid Ambient Glow Elements -->
+    <div class="liquid-orb orb-up-1"></div>
+    <div class="liquid-orb orb-up-2"></div>
+
+    <div class="container">
+        <header>
+            <h1><span class="logo-icon">🚀</span> What's New</h1>
+            <div class="header-controls">
+                <a href="index.html" class="header-link">⬅ Back to Diary</a>
+            </div>
+        </header>
+
+        <main>
+            <p class="intro-text">
+                Track the latest features, performance improvements, and updates to Advocate Diary
+            </p>
+            
+            <div class="update-list-container">
+
+                <!-- Version 4.0 -->
+                <div class="update-card border-purple">
+                    <div class="version-header">
+                        <div>
+                            <span class="badge badge-new">Latest Major Release</span>
+                            <h2>Version 4.0: Liquid Glass & Tactile Intelligence</h2>
+                        </div>
+                        <span class="version-date">September 2026</span>
+                    </div>
+                    <p>A ground-up aesthetic and functional overhaul introducing an Apple-inspired Liquid Glass design system, native popup replacements, and intelligent case rescheduling shortcuts.</p>
+                    
+                    <div class="feature-title">✨ Liquid Glass UI & Theming</div>
+                    <ul>
+                        <li><strong>Apple Liquid Glass Design:</strong> Premium multi-layer frosted blur backdrop, saturated color mesh, and floating ambient glow orbs across every page.</li>
+                        <li><strong>High-Contrast Dual Mode:</strong> Switch effortlessly between <em>Obsidian Dark Glass</em> and <em>Milky Frost Light Glass</em> with crisp deep-ink typography and zero washed-out text.</li>
+                        <li><strong>Floating Glass Theme Toggle:</strong> Replaced rigid header switches with an independent circular floating widget (`☀️ / 🌙`) pinned to the top-right corner.</li>
+                    </ul>
+
+                    <div class="feature-title">💎 Tactile Dialogs & Smart Actions</div>
+                    <ul>
+                        <li><strong>Custom Liquid Glass Dialogs:</strong> Permanently replaced browser's native alert/confirm popups with centered frosted glass warning cards with spring micro-interactions.</li>
+                        <li><strong>Instant Undo Feature:</strong> Deleting a case now triggers a 5-second countdown progress bar with an <em>"Undo ↩️"</em> button to instantly restore records without opening Recycle Bin.</li>
+                        <li><strong>Quick Hearing Reschedule:</strong> Added one-tap reschedule pills (`+7 Days`, `+15 Days`, `+1 Month`) inside the edit case window for effortless date management.</li>
+                        <li><strong>Seamless Page Synchronization:</strong> Harmonized headers, navigation pills, and global footer directories across Diary, Clients, Dashboard, Recycle Bin, and Developer profiles.</li>
+                    </ul>
+                </div>
+
+                <!-- Version 3.0 -->
+                <div class="update-card border-green">
+                    <div class="version-header">
+                        <div>
+                            <h2>Version 3.0: The Pure Web & Pro Features</h2>
+                        </div>
+                        <span class="version-date">June 2026</span>
+                    </div>
+                    <p>This massive update transforms Advocate Diary into a lightning-fast, pure web application with advanced professional tools[cite: 1].</p>
+                    
+                    <div class="feature-title">⚡ Performance & UI</div>
+                    <ul>
+                        <li><strong>100% Pure Web App:</strong> Removed heavy mobile app dependencies (Android Studio/Capacitor) for instant loading and seamless browser performance[cite: 1].</li>
+                        <li><strong>AMOLED Dark Mode:</strong> Upgraded the dark theme to 'Deep Black' for better battery life on OLED screens and a premium aesthetic[cite: 1].</li>
+                        <li><strong>Scroll Bleed Fix:</strong> Solved the background scrolling issue when editing cases in pop-up modals[cite: 1].</li>
+                    </ul>
+
+                    <div class="feature-title">🛠️ Pro Features</div>
+                    <ul>
+                        <li><strong>Advanced Smart Search:</strong> Multi-field instant filtering (Court, Nature, Year, Party Name) without reloading the database[cite: 1].</li>
+                        <li><strong>PDF Reports:</strong> Added a new (📄) button to generate and print professional, letterhead-style case history reports instantly[cite: 1].</li>
+                        <li><strong>WhatsApp Integration:</strong> Send beautifully formatted hearing reminders directly to clients via an official WhatsApp button[cite: 1].</li>
+                        <li><strong>Smooth Animations:</strong> Added subtle transitions and hover effects for a modern feel[cite: 1].</li>
+                    </ul>
+                </div>
+
+                <!-- Version 2.0 -->
+                <div class="update-card border-blue">
+                    <div class="version-header">
+                        <div>
+                            <h3>Version 2.0: The Professional Update</h3>
+                        </div>
+                        <span class="version-date">December 2025</span>
+                    </div>
+                    <p>Focused on <strong>Enterprise-Grade Security</strong> and a refined <strong>Mobile Experience</strong>[cite: 1].</p>
+                    <ul>
+                        <li><strong>Verified Login System:</strong> Implemented mandatory email verification to prevent unauthorized access[cite: 1].</li>
+                        <li><strong>Smart Admin Panel:</strong> Enhanced dashboard for administrators with real-time user tracking and case monitoring[cite: 1].</li>
+                        <li><strong>Adaptive Mobile Layout:</strong> Fixed layout inconsistencies on smaller screens (Zero-Gap design)[cite: 1].</li>
+                    </ul>
+                </div>
+
+                <!-- Version 1.5 -->
+                <div class="update-card border-gray">
+                    <div class="version-header">
+                        <h3>Version 1.5: Dark Mode & Features</h3>
+                        <span class="version-date">November 2025</span>
+                    </div>
+                    <ul>
+                        <li><strong>Dark Mode:</strong> Introduced a system-wide dark theme for better visibility at night[cite: 1].</li>
+                        <li><strong>Recycle Bin:</strong> Added a safety net to restore accidentally deleted cases[cite: 1].</li>
+                        <li><strong>Google Calendar Sync:</strong> One-click button to save hearing dates directly to your phone's calendar[cite: 1].</li>
+                    </ul>
+                </div>
+
+                <!-- Legacy Updates Accordion -->
+                <details>
+                    <summary>View Legacy Updates (History)</summary>
+                    <div class="legacy-content">
+                        <h4>Version 1.0 - The Beginning</h4>
+                        <p>Initial launch of Advocate Diary with core case management features[cite: 1].</p>
+                        <ul>
+                            <li>Basic Case Entry (Case No, Court, Party Name)[cite: 1].</li>
+                            <li>Next Date Auto-Forwarding System[cite: 1].</li>
+                            <li>Print List Capability[cite: 1].</li>
+                            <li>Basic Search Functionality[cite: 1].</li>
+                        </ul>
+                    </div>
+                </details>
+
+            </div>
+        </main>
+    </div>
+
+    <div class="global-footer">
+        <p>Created with ❤️ by Yeash Pandey & Alfi khan</p>
+        <p>
+            <a href="policy.html">Privacy Policy</a> &bull; 
+            <a href="about.html">About Developers</a> &bull; 
+            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
+        </p>
+    </div>
+</body>
+</html>

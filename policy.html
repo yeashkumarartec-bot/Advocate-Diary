@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Privacy Policy - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=50.8">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#080b12">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <script src="theme.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- LIQUID GLASS PRIVACY POLICY THEME --- */
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            background: #080b12;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Ambient Liquid Glow Orbs */
+        .liquid-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            animation: floatOrb 14s ease-in-out infinite alternate;
+        }
+        .orb-pol-1 {
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, #3b82f6 0%, #6366f1 100%);
+            top: -120px;
+            left: -100px;
+        }
+        .orb-pol-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #8b5cf6 0%, #ec4899 100%);
+            bottom: -80px;
+            right: -60px;
+            animation-duration: 18s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, 30px) scale(1.06); }
+            100% { transform: translate(-30px, 20px) scale(0.95); }
+        }
+
+        /* Main Glass Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 950px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(18, 24, 38, 0.65) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 24px !important;
+            padding: 32px 28px !important;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7) !important;
+            box-sizing: border-box;
+            animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            font-size: 1.2em;
+            filter: drop-shadow(0 4px 10px rgba(99, 102, 241, 0.4));
+        }
+
+        .header-link {
+            text-decoration: none;
+            padding: 9px 18px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f1f5f9;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .header-link:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .doc-title {
+            text-align: center;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.3rem);
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0 0 6px 0;
+            letter-spacing: -0.02em;
+        }
+        .last-updated {
+            text-align: center;
+            color: #fb7185;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            font-weight: 600;
+            background: rgba(244, 63, 94, 0.1);
+            border: 1px solid rgba(244, 63, 94, 0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .date-badge-wrapper {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        /* Glass Policy Card */
+        .policy-content {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 34px 30px;
+            border-radius: 20px;
+            line-height: 1.8;
+            color: #cbd5e1;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+        }
+        .policy-content h2 {
+            font-family: 'Outfit', sans-serif;
+            color: #818cf8;
+            margin-top: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .policy-content h2:first-of-type {
+            margin-top: 20px;
+        }
+        .policy-content p, .policy-content li {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+        .policy-content strong {
+            color: #f1f5f9;
+        }
+        .policy-content ul {
+            padding-left: 22px;
+            margin-bottom: 18px;
+        }
+        .policy-content ul li {
+            margin-bottom: 8px;
+        }
+
+        /* Global Footer */
+        .global-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 36px;
+            color: #64748b;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .global-footer p {
+            margin: 4px 0;
+        }
+        .global-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .global-footer a:hover {
+            color: #818cf8;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 14px 10px; }
+            .container { padding: 20px 14px !important; border-radius: 18px !important; }
+            header { flex-direction: column; align-items: stretch; text-align: center; gap: 14px; }
+            header h1 { justify-content: center; }
+            .header-link { width: 100%; justify-content: center; box-sizing: border-box; }
+            .policy-content { padding: 24px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Liquid Ambient Glow Elements -->
+    <div class="liquid-orb orb-pol-1"></div>
+    <div class="liquid-orb orb-pol-2"></div>
+
+    <div class="container">
+        <header>
+            <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
+            <div class="header-controls">
+                <a href="index.html" class="header-link">⬅ Back to Diary</a>
+            </div>
+        </header>
+
+        <main>
+            <h1 class="doc-title">Privacy Policy</h1>
+            <div class="date-badge-wrapper">
+                <span class="last-updated">Last Updated: September 20, 2026</span>
+            </div>
+
+            <div class="policy-content">
+                <p>Welcome to <strong>Advocate Diary</strong>. We value your trust and are committed to protecting your personal information and case data. This Privacy Policy outlines how we collect, use, and safeguard your data in accordance with global standards.</p>
+
+                <h2>1. Information We Collect</h2>
+                <p>We collect information to provide better services to all our users. The types of information we collect include:</p>
+                <ul>
+                    <li><strong>Account Information:</strong> When you register, we collect your email address and name for authentication purposes via Google Firebase.</li>
+                    <li><strong>Case Data:</strong> The case numbers, party names, court details, and dates you enter are stored securely to provide the core functionality of the app.</li>
+                    <li><strong>Usage Data:</strong> We may collect analytical data on how the app is accessed and used (e.g., dark mode preferences) to improve user experience.</li>
+                </ul>
+
+                <h2>2. How We Use Information</h2>
+                <p>We use the information we collect for the following purposes:</p>
+                <ul>
+                    <li><strong>Service Provision:</strong> To maintain your digital diary, forward case dates automatically, generate PDF reports, and manage client details.</li>
+                    <li><strong>Security:</strong> To verify your identity and prevent unauthorized access to your account.</li>
+                    <li><strong>Communication:</strong> To send important account updates, such as password reset emails, WhatsApp case alerts, or security alerts.</li>
+                </ul>
+
+                <h2>3. Data Storage & Security</h2>
+                <p>Your data is our top priority. We utilize <strong>Google Firebase</strong> (a Google Cloud service) to store and encrypt your data. This ensures enterprise-grade security, including:</p>
+                <ul>
+                    <li><strong>Encryption:</strong> Data is encrypted in transit (HTTPS) and at rest.</li>
+                    <li><strong>Access Control:</strong> Strict authentication protocols ensure only you can access your private case data.</li>
+                    <li><strong>Reliability:</strong> 99.9% uptime guaranteed by Google Cloud infrastructure.</li>
+                </ul>
+
+                <h2>4. Data Sharing & Disclosure</h2>
+                <p><strong>We do not sell your personal data.</strong> We respect your confidentiality. We do not share your case details with third parties, advertisers, or other organizations, except as required by law.</p>
+
+                <h2>5. Your Rights & Choices</h2>
+                <p>You have full control over your data:</p>
+                <ul>
+                    <li><strong>Access & Edit:</strong> You can view and edit your case files at any time.</li>
+                    <li><strong>Delete:</strong> You can move cases to the Recycle Bin or permanently delete them.</li>
+                    <li><strong>Export:</strong> You can use the PDF Export and Print features to keep offline records of your data.</li>
+                </ul>
+
+                <h2>6. Changes to This Policy</h2>
+                <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this page periodically for any changes.</p>
+
+                <h2>7. Contact Us</h2>
+                <p>If you have any questions about this Privacy Policy, please contact us:</p>
+                <p><strong>Email:</strong> <a href="mailto:contact.advocatediary@gmail.com" style="color:#818cf8; font-weight: 600; text-decoration: none;">contact.advocatediary@gmail.com</a></p>
+            </div>
+        </main>
+    </div>
+
+    <div class="global-footer">
+        <p>Created with ❤️ by Yeash Pandey & Alfi khan</p>
+        <p>
+            <a href="login.html">Login</a> &bull; 
+            <a href="updates.html">App Updates</a> &bull; 
+            <a href="about.html">About Developers</a> &bull; 
+            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
+        </p>
+    </div>
+</body>
+</html>

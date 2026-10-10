@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Recycle Bin - Advocate Diary</title>
+    <link rel="stylesheet" href="style.css?v=50.6">
+    <script src="theme.js"></script>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#080b12">
+    
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- LIQUID GLASS RECYCLE BIN THEME --- */
+        body {
+            margin: 0;
+            padding: 24px 16px;
+            background: #080b12;
+            color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Ambient Liquid Glow Orbs (Subtle Rose/Crimson Trash Glow) */
+        .liquid-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.45;
+            animation: floatOrb 14s ease-in-out infinite alternate;
+        }
+        .orb-bin-1 {
+            width: 440px;
+            height: 440px;
+            background: radial-gradient(circle, #f43f5e 0%, #be123c 100%);
+            top: -120px;
+            left: -100px;
+        }
+        .orb-bin-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, #6366f1 0%, #4338ca 100%);
+            bottom: -80px;
+            right: -60px;
+            animation-duration: 18s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(35px, 30px) scale(1.06); }
+            100% { transform: translate(-30px, 20px) scale(0.95); }
+        }
+
+        /* Frosted Glass Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1250px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(18, 24, 38, 0.65) !important;
+            backdrop-filter: blur(28px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 24px !important;
+            padding: 32px 28px !important;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7) !important;
+            box-sizing: border-box;
+            animation: pageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 24px;
+            margin-bottom: 28px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            font-size: 1.2em;
+            filter: drop-shadow(0 4px 10px rgba(99, 102, 241, 0.4));
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        #userEmail {
+            background: rgba(255, 255, 255, 0.05);
+            color: #818cf8;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.88rem;
+            white-space: nowrap;
+        }
+
+        .header-link {
+            text-decoration: none;
+            padding: 9px 16px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f1f5f9;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .header-link:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        #btnLogout {
+            padding: 9px 18px;
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #btnLogout:hover {
+            background: #ef4444;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
+        }
+
+        /* Titles */
+        .bin-title {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .bin-title h2 {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fb7185;
+            letter-spacing: -0.01em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .bin-title p {
+            margin: 6px 0 0 0;
+            color: #94a3b8;
+            font-size: 0.92rem;
+        }
+
+        .section-heading {
+            margin: 32px 0 14px 0;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        /* Glass Table Container */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
+            margin-bottom: 24px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 680px;
+        }
+        th {
+            background: rgba(255, 255, 255, 0.04);
+            color: #94a3b8;
+            padding: 16px 18px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+        }
+        td {
+            padding: 16px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f8fafc;
+            vertical-align: middle;
+            font-size: 0.92rem;
+        }
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        /* Action Buttons inside Tables */
+        .action-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 6px 14px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-right: 6px;
+        }
+        .restore-btn {
+            background: rgba(16, 185, 129, 0.15) !important;
+            color: #34d399 !important;
+            border: 1px solid rgba(16, 185, 129, 0.3) !important;
+        }
+        .restore-btn:hover {
+            background: #10b981 !important;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        .permanent-delete-btn {
+            background: rgba(244, 63, 94, 0.15) !important;
+            color: #fb7185 !important;
+            border: 1px solid rgba(244, 63, 94, 0.3) !important;
+        }
+        .permanent-delete-btn:hover {
+            background: #f43f5e !important;
+            color: white !important;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .global-footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            margin-top: 36px;
+            color: #64748b;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .global-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .global-footer a:hover {
+            color: #818cf8;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 14px 10px; }
+            .container { padding: 20px 14px !important; border-radius: 18px !important; }
+            header { flex-direction: column; align-items: stretch; text-align: center; gap: 16px; }
+            header h1 { justify-content: center; }
+            .header-controls { flex-direction: column; width: 100%; align-items: stretch; }
+            .header-link, #btnLogout, #userEmail { width: 100%; box-sizing: border-box; justify-content: center; text-align: center; }
+            table { min-width: 580px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Liquid Ambient Glow Orbs -->
+    <div class="liquid-orb orb-bin-1"></div>
+    <div class="liquid-orb orb-bin-2"></div>
+
+    <div class="container">
+        <header>
+            <h1><span class="logo-icon">⚖️</span> Advocate Diary</h1>
+            <div class="header-controls">
+                <span id="userEmail">Loading...</span>
+                <a href="dashboard.html" class="header-link">📊 Dashboard</a> 
+                <a href="clients.html" class="header-link">👥 My Clients</a>
+                <a href="index.html" class="header-link">📘 Go to Diary</a> 
+                <button id="btnLogout">Logout</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="bin-title">
+                <h2>♻️ Recycle Bin</h2>
+                <p>Restore accidentally removed items or permanently delete them.</p>
+            </div>
+            
+            <h3 class="section-heading">👥 Deleted Clients</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Mobile</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientRecycleBin">
+                        <tr><td colspan="4" style="text-align:center; padding:20px; color:#94a3b8;">Loading items...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="section-heading">📁 Deleted Cases</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Case No</th>
+                            <th>Party Name</th>
+                            <th>Purpose</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="caseRecycleBin">
+                        <tr><td colspan="4" style="text-align:center; padding:20px; color:#94a3b8;">Loading items...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <div class="global-footer">
+        <p>Created with ❤️ by Yeash Pandey & Alfi khan</p>
+        <p>
+            <a href="updates.html">App Updates</a> &bull; 
+            <a href="policy.html">Privacy Policy</a> &bull; 
+            <a href="about.html">About Developers</a> &bull; 
+            <a href="mailto:contact.advocatediary@gmail.com">Contact Us</a>
+        </p>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script>
+        const firebaseConfig = { 
+            apiKey: "AIzaSyBpe3oaDibo7Y9ZaPxf5hJtRyI6PhTY344", 
+            authDomain: "advocate-diary-co.firebaseapp.com", 
+            projectId: "advocate-diary-co", 
+            storageBucket: "advocate-diary-co.appspot.com", 
+            messagingSenderId: "809588634104", 
+            appId: "1:809588634104:web:f5d4838294ad602aeb660d", 
+            measurementId: "G-53VM0EZCWC" 
+        }; 
+        firebase.initializeApp(firebaseConfig);
+    </script>
+    <script src="recyclebin.js?v=54.0"></script>
+</body>
+</html>

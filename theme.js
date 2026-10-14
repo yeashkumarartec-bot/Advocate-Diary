@@ -412,7 +412,7 @@
     document.head.appendChild(styleEl);
 })();
 
-// ================= GLOBAL TOAST NOTIFICATION API =================
+// GLOBAL TOAST NOTIFICATION API
 window.showGlassToast = function (message, type = 'info', actionText = null, onAction = null, duration = 4000) {
     let container = document.getElementById('glassToastContainer');
     if (!container) {
@@ -481,8 +481,7 @@ window.showGlassToast = function (message, type = 'info', actionText = null, onA
     }
 };
 
-// ================= GLOBAL NATIVE ALERT OVERRIDE =================
-// Kahi bhi alert() call hoga toh wo automatically Liquid Glass Toast ban jayega
+// GLOBAL NATIVE ALERT OVERRIDE
 window.alert = function (message) {
     const text = String(message || '');
     let type = 'info';
@@ -496,7 +495,7 @@ window.alert = function (message) {
     window.showGlassToast(text, type);
 };
 
-// ================= GLOBAL CONFIRMATION MODAL API =================
+// GLOBAL CONFIRMATION MODAL API
 window.glassConfirm = function (title, message, confirmBtnText = 'Confirm', isDanger = true) {
     return new Promise((resolve) => {
         let overlay = document.getElementById('glassConfirmOverlay');
@@ -539,7 +538,7 @@ window.glassConfirm = function (title, message, confirmBtnText = 'Confirm', isDa
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 3. Setup Floating Theme Toggle Button
+    // Setup Floating Theme Toggle Button
     function setupFloatingThemeBtn() {
         let btn = document.getElementById('themeToggle');
         
